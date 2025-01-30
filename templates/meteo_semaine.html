@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Prévisions météo semaine - AgriHelper{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-4">Prévisions météo pour la semaine</h2>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <form method="GET" class="mb-4">
+            <div class="input-group">
+                <input type="text" class="form-control" name="location" placeholder="Entrez votre localisation" required>
+                <button type="submit" class="btn btn-primary">Rechercher</button>
+            </div>
+        </form>
+
+        {% if weather_data %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Prévisions pour {{ location }}</h5>
+                <ul class="list-group">
+                    {% for day in weather_data %}
+                    <li class="list-group-item">
+                        <strong>{{ day.date }}</strong>: {{ day.temp }}°C, {{ day.description }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% elif error %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+# Fichiers système
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+
+# Dépendances
+venv/
+env/
+.venv/
+pip-wheel-metadata/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs et bases de données
+*.log
+*.sqlite3

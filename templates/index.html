@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil - AgriHelper{% endblock %}
+
+{% block content %}
+<!-- Section d'accueil -->
+<div class="hero-section text-center py-5">
+    <h1 class="display-4">Bienvenue sur AgriHelper</h1>
+    <p class="lead">
+        Optimisez vos récoltes grâce à des prévisions météo précises et des conseils personnalisés sur vos sols.
+    </p>
+    <a href="#form-section" class="btn btn-primary btn-lg">Commencer maintenant</a>
+</div>
+
+<!-- Section formulaire -->
+<section id="form-section" class="mt-5">
+    <h2 class="text-center mb-4">Entrez vos informations</h2>
+    <form method="POST" class="row g-3 justify-content-center">
+        <div class="col-md-6">
+            <label for="location" class="form-label"><i class="fas fa-map-marker-alt"></i> Localisation :</label>
+            <input type="text" class="form-control" id="location" name="location" placeholder="Entrez votre ville ou village" required>
+        </div>
+        <div class="col-md-6">
+            <label for="soil_type" class="form-label"><i class="fas fa-seedling"></i> Type de sol :</label>
+            <select class="form-select" id="soil_type" name="soil_type" required>
+                <option value="sandy">Sablonneux</option>
+                <option value="clay">Argileux</option>
+                <option value="unknown">Inconnu</option>
+            </select>
+        </div>
+        <div class="col-12 text-center">
+            <button type="submit" class="btn btn-success btn-block">Soumettre</button>
+        </div>
+    </form>
+</section>
+
+<!-- Section "Nos outils" -->
+<section class="tools-section mt-5">
+    <h2 class="text-center mb-4">Nos outils pour vous accompagner</h2>
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <i class="fas fa-calendar-alt fa-3x mb-3"></i>
+                    <h5 class="card-title">Prévisions météo semaine</h5>
+                    <p class="card-text">Consultez les prévisions météo détaillées pour la semaine.</p>
+                    <a href="/meteo-semaine" class="btn btn-primary">Accéder</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <i class="fas fa-cloud fa-3x mb-3"></i>
+                    <h5 class="card-title">Cartes de pollution</h5>
+                    <p class="card-text">Visualisez les zones de pollution de l'air et des sols.</p>
+                    <a href="/pollution" class="btn btn-primary">Accéder</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <i class="fas fa-globe-africa fa-3x mb-3"></i>
+                    <h5 class="card-title">Typologie des sols</h5>
+                    <p class="card-text">Découvrez les caractéristiques des sols de votre région.</p>
+                    <a href="/typologie-sols" class="btn btn-primary">Accéder</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section carte interactive -->
+<section class="map-section mt-5">
+    <h2 class="text-center mb-4">Carte interactive des sols</h2>
+    <div id="map"></div>
+</section>
+
+<!-- Formulaire de contact -->
+<section class="contact-section mt-5">
+    <h2 class="text-center mb-4">Besoin d'aide ? Contactez-nous</h2>
+    <form method="POST" action="/contact" class="row g-3 justify-content-center">
+        <div class="col-md-6">
+            <label for="name" class="form-label">Nom complet :</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="col-md-6">
+            <label for="email" class="form-label">Email :</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="col-12">
+            <label for="message" class="form-label">Message :</label>
+            <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+        </div>
+        <div class="col-12 text-center">
+            <button type="submit" class="btn btn-success">Envoyer</button>
+        </div>
+    </form>
+</section>
+
+<!-- Animation de fond -->
+<div id="particles-js"></div>
+{% endblock %}

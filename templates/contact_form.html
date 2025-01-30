@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Nous contacter - AgriHelper{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-4">Contactez-nous</h2>
+<form method="POST" action="/contact" class="row g-3 justify-content-center">
+    <div class="col-md-6">
+        <label for="name" class="form-label">Nom complet :</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="col-md-6">
+        <label for="email" class="form-label">Email :</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+    <div class="col-12">
+        <label for="message" class="form-label">Message :</label>
+        <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+    </div>
+    <div class="col-12 text-center">
+        <button type="submit" class="btn btn-success">Envoyer</button>
+    </div>
+</form>
+{% endblock %}
