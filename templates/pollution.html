@@ -1,22 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Cartes de pollution - AgriHelper{% endblock %}
+{% block title %}Pollution de l'air - AgriHelper{% endblock %}
 
 {% block content %}
-<h2 class="text-center mb-4">Données de pollution</h2>
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        {% if pollution_data %}
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Pollution à {{ pollution_data.city }}</h5>
-                <p class="card-text"><strong>Indice AQI :</strong> {{ pollution_data.aqi }}</p>
-                <p class="card-text"><strong>Qualité de l'air :</strong> {{ pollution_data.quality }}</p>
-            </div>
-        </div>
-        {% elif error %}
-        <div class="alert alert-danger">{{ error }}</div>
-        {% endif %}
+<h2 class="text-center mb-4">Pollution de l'air pour {{ pollution_data.city }}</h2>
+<div class="card text-center">
+    <div class="card-body">
+        <p class="card-text">Indice AQI : {{ pollution_data.aqi }}</p>
+        <p class="card-text">Qualité de l'air : {{ pollution_data.quality }}</p>
     </div>
 </div>
+<a href="/" class="btn btn-primary mt-4">Retour à l'accueil</a>
 {% endblock %}

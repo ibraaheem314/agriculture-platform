@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Erreur - AgriHelper{% endblock %}
+
+{% block content %}
+<div class="alert alert-danger text-center mt-5">
+    <h4>Une erreur s'est produite</h4>
+    <p>{{ message }}</p>
+    <a href="/" class="btn btn-primary">Retour à l'accueil</a>
+</div>
+{% endblock %}

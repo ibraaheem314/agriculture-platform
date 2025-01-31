@@ -104,3 +104,67 @@ footer .social-icons a {
 .alert {
     margin-top: 20px;
 }
+
+/* Couleurs principales */
+:root {
+    --primary-color: #28a745;
+    --secondary-color: #f8f9fa;
+    --accent-color: #007bff;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--secondary-color);
+    color: #333;
+}
+
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/static/images/farm.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 100px 20px;
+    text-align: center;
+}
+
+.features-section .col-md-4 {
+    margin-bottom: 20px;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.contact-section form {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles pour la section À propos */
+.about-section {
+    background-color: #f8f9fa;
+    padding: 50px 20px;
+    border-radius: 10px;
+    margin-top: 30px;
+}
+
+.about-section h3 {
+    color: #28a745;
+}
+
+.about-section img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}

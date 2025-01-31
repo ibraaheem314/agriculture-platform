@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Résultats personnalisés - AgriHelper{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-4">Résultats pour {{ location or 'vos coordonnées' }}</h2>
+
+<!-- Section carte interactive -->
+<div id="interactive-map" style="height: 400px;" class="mb-5"></div>
+
+<!-- Section prévisions météo -->
+<section class="mt-5">
+    <h3 class="text-center mb-4"><i class="fas fa-cloud-sun"></i> Prévisions météo</h3>
+    {% if weather_data %}
+    <div class="card text-center">
+        <div class="card-body">
+            <p class="card-text">Température : {{ weather_data.temperature }}°C</p>
+            <p class="card-text">Description : {{ weather_data.description }}</p>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-warning text-center">Impossible de récupérer les prévisions météo.</div>
+    {% endif %}
+</section>
+
+<!-- Section pollution -->
+<section class="mt-5">
+    <h3 class="text-center mb-4"><i class="fas fa-smog"></i> Pollution de l'air</h3>
+    {% if pollution_data %}
+    <div class="card text-center">
+        <div class="card-body">
+            <p class="card-text">Indice AQI : {{ pollution_data.aqi }}</p>
+            <p class="card-text">Qualité de l'air : {{ pollution_data.quality }}</p>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-warning text-center">Impossible de récupérer les données de pollution.</div>
+    {% endif %}
+</section>
+
+<!-- Section typologie des sols -->
+<section class="mt-5">
+    <h3 class="text-center mb-4"><i class="fas fa-seedling"></i> Typologie des sols</h3>
+    {% if soil_data is not none %}
+    <div class="card text-center">
+        <div class="card-body">
+            <p class="card-text">Teneur en argile : {{ soil_data }}%</p>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-warning text-center">Impossible de récupérer les données sur les sols.</div>
+    {% endif %}
+</section>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script>
+    // Initialiser la carte
+    var map = L.map('interactive-map').setView([{{ lat }}, {{ lon }}], 13);
+
+    // Ajouter une couche de tuiles OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Ajouter un marqueur à la position spécifiée
+    L.marker([{{ lat }}, {{ lon }}]).addTo(map)
+        .bindPopup("Votre emplacement : {{ location or 'Coordonnées GPS' }}")
+        .openPopup();
+</script>
+{% endblock %}

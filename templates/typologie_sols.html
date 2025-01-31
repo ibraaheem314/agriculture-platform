@@ -3,19 +3,12 @@
 {% block title %}Typologie des sols - AgriHelper{% endblock %}
 
 {% block content %}
-<h2 class="text-center mb-4">Typologie des sols</h2>
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        {% if soil_type %}
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Type de sol</h5>
-                <p class="card-text"><strong>Teneur en argile :</strong> {{ soil_type }}%</p>
-            </div>
-        </div>
-        {% elif error %}
-        <div class="alert alert-danger">{{ error }}</div>
-        {% endif %}
+<h2 class="text-center mb-4">Typologie des sols pour {{ soil_data.region }}</h2>
+<div class="card text-center">
+    <div class="card-body">
+        <p class="card-text">Teneur en argile : {{ soil_data.clay_percentage }}%</p>
+        <p class="card-text">Type de sol : {{ soil_data.soil_type }}</p>
     </div>
 </div>
+<a href="/" class="btn btn-primary mt-4">Retour à l'accueil</a>
 {% endblock %}

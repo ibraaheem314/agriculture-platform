@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Carte interactive - AgriHelper{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-4">Votre carte interactive</h2>
+<div id="interactive-map" style="height: 500px;"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script>
+    // Initialiser la carte
+    var map = L.map('interactive-map').setView([{{ lat }}, {{ lon }}], 13);
+
+    // Ajouter une couche de tuiles OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Ajouter un marqueur à la position spécifiée
+    L.marker([{{ lat }}, {{ lon }}]).addTo(map)
+        .bindPopup("Votre emplacement : {{ location or 'Coordonnées GPS' }}")
+        .openPopup();
+
+    // Exemple : Ajouter des cercles pour représenter la pollution
+    var pollutionZones = [
+        { lat: {{ lat }}, lon: {{ lon }}, level: "Élevé" },
+        { lat: {{ lat + 0.1 }}, lon: {{ lon + 0.1 }}, level: "Modéré" }
+    ];
+
+    pollutionZones.forEach(zone => {
+        L.circle([zone.lat, zone.lon], {
+            color: zone.level === "Élevé" ? "red" : "orange",
+            fillColor: zone.level === "Élevé" ? "red" : "orange",
+            fillOpacity: 0.5,
+            radius: 5000
+        }).addTo(map).bindPopup(`Niveau de pollution: ${zone.level}`);
+    });
+</script>
+{% endblock %}

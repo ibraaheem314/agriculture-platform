@@ -10,6 +10,24 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center">Tableau de bord</h1>
+
+        <!-- Section À propos de nous -->
+        <section class="mt-5">
+            <h3 class="text-center mb-4">À propos de nous</h3>
+            <div class="card">
+                <div class="card-body">
+                    <p>
+                        AgriHelper est une plateforme innovante conçue pour aider les agriculteurs à optimiser leurs récoltes grâce à des outils intelligents.
+                        Notre mission est de fournir des données précises et des prévisions fiables pour améliorer la productivité agricole.
+                    </p>
+                    <p>
+                        Pour en savoir plus sur notre équipe et nos objectifs, visitez la page <a href="/about">À propos de nous</a>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tableau des requêtes -->
         <table class="table table-striped mt-4">
             <thead>
                 <tr>
@@ -24,13 +42,16 @@
                 <tr>
                     <td>{{ query.location }}</td>
                     <td>{{ query.soil_type }}</td>
-                    <td>{{ query.weather_data['main']['temp'] }}</td>
-                    <td>{{ query.advice }}</td>
+                    <td>{{ query.weather_data['main']['temp'] if query.weather_data else 'N/A' }}</td>
+                    <td>{{ query.advice or 'Aucun conseil disponible' }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
         <a href="/" class="btn btn-primary">Retour à l'accueil</a>
     </div>
+
+    <!-- Scripts JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
