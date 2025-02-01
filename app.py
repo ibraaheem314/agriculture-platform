@@ -9,7 +9,7 @@ from flask_mail import Mail, Message
 load_dotenv()
 airvisual_api_key = os.getenv("AIRVISUAL_API_KEY")
 openweather_api_key = os.getenv("OPENWEATHER_API_KEY")
-# Initialiser l'application Flask
+
 app = Flask(__name__)
 
 # Configuration de la base de données SQLite

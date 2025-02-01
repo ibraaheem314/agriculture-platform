@@ -3,19 +3,14 @@
 {% block title %}Prévisions météo - AgriHelper{% endblock %}
 
 {% block content %}
-<h2 class="text-center mb-4">Prévisions météo pour {{ weather_data.city }}</h2>
-<div class="row">
-    {% for day in weather_data.forecast %}
-    <div class="col-md-4 text-center">
-        <div class="card h-100">
-            <div class="card-body">
-                <h5 class="card-title">{{ day.date }}</h5>
-                <p class="card-text">Température : {{ day.temp }}°C</p>
-                <p class="card-text">{{ day.description }}</p>
-            </div>
-        </div>
+<h2 class="text-center mb-4">Prévisions météo en temps réel</h2>
+<div class="card text-center">
+    <div class="card-body">
+        <p class="card-text">Température : {{ weather_data.temperature }}°C</p>
+        <p class="card-text">Humidité : {{ weather_data.humidity }}%</p>
+        <p class="card-text">Description : {{ weather_data.description }}</p>
+        <p class="card-text">Vitesse du vent : {{ weather_data.wind_speed }} m/s</p>
     </div>
-    {% endfor %}
 </div>
 <a href="/" class="btn btn-primary mt-4">Retour à l'accueil</a>
 {% endblock %}
