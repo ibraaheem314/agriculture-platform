@@ -3,111 +3,190 @@
 {% block title %}Accueil - AgriHelper{% endblock %}
 
 {% block content %}
-<!-- Section d'accueil -->
-<div class="hero-section text-center py-5">
-    <h1 class="display-4">Bienvenue sur AgriHelper</h1>
-    <p class="lead">
-        La plateforme qui vous aide à optimiser vos récoltes grâce à des outils intelligents.
-    </p>
-    <a href="#form-section" class="btn btn-primary btn-lg">Commencer maintenant</a>
+<!-- Section Infos/Mises à Jour -->
+<div class="info-section py-2" style="background-color: #28a745; color: white;">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="info-text" style="overflow: hidden; white-space: nowrap;">
+                <span class="scrolling-text">
+                    🌱 Dernière mise à jour : Nouvelle fonctionnalité AgriBot disponible ! | 🌞 Consultez nos prévisions météo précises pour la semaine | 📊 Analysez vos sols avec notre outil Typologie des Sols
+                </span>
+            </div>
+            <a href="/articles" class="text-white ms-3" style="text-decoration: none;">Lire plus <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
 </div>
 
-<!-- Section formulaire -->
-<section id="form-section" class="mt-5">
-    <h2 class="text-center mb-4">Entrez vos informations</h2>
-    <form method="POST" class="row g-3 justify-content-center">
-        <div class="col-md-6">
-            <label for="location" class="form-label"><i class="fas fa-map-marker-alt"></i> Localisation :</label>
-            <input type="text" class="form-control" id="location" name="location" placeholder="Entrez votre ville ou village" required>
-        </div>
-        <div class="col-md-6">
-            <label for="coordinates" class="form-label"><i class="fas fa-globe"></i> Coordonnées GPS (facultatif) :</label>
-            <input type="text" class="form-control" id="coordinates" name="coordinates" placeholder="Ex: 12.372365, -1.628863">
-        </div>
-        <div class="col-12 text-center">
-            <button type="submit" class="btn btn-success w-100">Soumettre</button>
-        </div>
-    </form>
+<!-- Section Hero -->
+<section class="hero-section text-center py-5" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/static/images/farm.jpg'); background-size: cover; background-position: center; color: white;">
+    <div class="container">
+        <h1 class="display-4">L’IA au service de l’agriculture durable</h1>
+        <p class="lead">Transformez vos pratiques agricoles grâce à des outils intelligents et des données en temps réel.</p>
+        <a href="#nos-solutions" class="btn btn-primary btn-lg">Découvrez nos solutions</a>
+    </div>
 </section>
 
-<!-- Section Nos outils -->
-<section class="tools-section mt-5">
-    <h2 class="text-center mb-4">Nos outils pour vous accompagner</h2>
-    <div class="row">
-        <div class="col-md-4 text-center">
-            <a href="/meteo-semaine" style="text-decoration: none; color: inherit;">
+<!-- Section Nos Solutions -->
+<section id="nos-solutions" class="py-5" style="background-color: #f8f9fa;">
+    <div class="container">
+        <h2 class="text-center mb-5" style="color: #28a745;">Nos Solutions</h2>
+        <div class="row">
+            <!-- Carte 1 : AgriBot -->
+            <div class="col-md-4 text-center">
                 <div class="card h-100">
                     <div class="card-body">
-                        <i class="fas fa-calendar-alt fa-3x mb-3"></i>
-                        <h5 class="card-title">Prévisions météo précises</h5>
-                        <p class="card-text">Consultez les prévisions météo détaillées pour la semaine.</p>
+                        <i class="fas fa-robot fa-3x mb-3" style="color: #28a745;"></i>
+                        <h5 class="card-title">AgriBot</h5>
+                        <p class="card-text">Posez vos questions sur les plantes, les maladies ou les pratiques agricoles.</p>
+                        <a href="/agribot" class="btn btn-success">Accéder à l'AgriBot</a>
                     </div>
                 </div>
-            </a>
-        </div>
-        <div class="col-md-4 text-center">
-            <a href="/pollution" style="text-decoration: none; color: inherit;">
+            </div>
+            <!-- Carte 2 : Prévisions Météo -->
+            <div class="col-md-4 text-center">
                 <div class="card h-100">
                     <div class="card-body">
-                        <i class="fas fa-cloud fa-3x mb-3"></i>
-                        <h5 class="card-title">Cartes de pollution</h5>
-                        <p class="card-text">Visualisez les zones de pollution de l'air et des sols.</p>
+                        <i class="fas fa-cloud-sun fa-3x mb-3" style="color: #28a745;"></i>
+                        <h5 class="card-title">Prévisions Météo</h5>
+                        <p class="card-text">Consultez les prévisions météo détaillées pour planifier vos activités.</p>
+                        <a href="/meteo-semaine" class="btn btn-success">Voir les prévisions</a>
                     </div>
                 </div>
-            </a>
-        </div>
-        <div class="col-md-4 text-center">
-            <a href="/typologie-sols" style="text-decoration: none; color: inherit;">
+            </div>
+            <!-- Carte 3 : Typologie des Sols -->
+            <div class="col-md-4 text-center">
                 <div class="card h-100">
                     <div class="card-body">
-                        <i class="fas fa-globe-africa fa-3x mb-3"></i>
-                        <h5 class="card-title">Typologie des sols</h5>
+                        <i class="fas fa-globe-africa fa-3x mb-3" style="color: #28a745;"></i>
+                        <h5 class="card-title">Typologie des Sols</h5>
                         <p class="card-text">Découvrez les caractéristiques des sols de votre région.</p>
+                        <a href="/typologie-sols" class="btn btn-success">Explorer les sols</a>
                     </div>
                 </div>
-            </a>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Section "Pourquoi nous choisir ?" -->
-<section class="why-us-section mt-5" data-aos="fade-up">
-    <h2 class="text-center mb-4">Pourquoi nous choisir ?</h2>
-    <div class="row">
-        <div class="col-md-6">
-            <p>Nous combinons des technologies avancées avec des données en temps réel pour vous offrir des solutions adaptées à vos besoins agricoles.</p>
-        </div>
-        <div class="col-md-6">
-            <blockquote class="blockquote">
-                <p>"AgriHelper m'a permis de doubler mes rendements grâce à des prévisions météo précises."</p>
-                <footer class="blockquote-footer">Un agriculteur satisfait</footer>
-            </blockquote>
+<!-- Section Pourquoi nous choisir ? -->
+<section class="why-us-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5" style="color: #28a745;">Pourquoi nous choisir ?</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <p>
+                    Nous combinons des technologies avancées avec des données en temps réel pour vous offrir des solutions adaptées à vos besoins agricoles.
+                </p>
+            </div>
+            <div class="col-md-6">
+                <blockquote class="blockquote">
+                    <p>"AgriHelper m'a permis de doubler mes rendements grâce à des prévisions météo précises."</p>
+                    <footer class="blockquote-footer">Un agriculteur satisfait</footer>
+                </blockquote>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Formulaire de contact -->
-<section class="contact-section mt-5" data-aos="fade-up">
-    <h2 class="text-center mb-4">Besoin d'aide ? Contactez-nous</h2>
-    <form method="POST" action="/contact" class="row g-3 justify-content-center">
-        <div class="col-md-6">
-            <label for="name" class="form-label">Nom complet :</label>
-            <input type="text" class="form-control" id="name" name="name" required>
+<!-- Section Infos et Mises à Jour -->
+<section class="updates-section py-5" style="background-color: #f8f9fa;">
+    <div class="container">
+        <h2 class="text-center mb-5" style="color: #28a745;">Infos et Mises à Jour</h2>
+        <div class="row">
+            <!-- Article 1 -->
+            <div class="col-md-4 text-center">
+                <div class="card h-100">
+                    <img src="{{ url_for('static', filename='images/article1.jpg') }}" class="card-img-top" alt="Article 1">
+                    <div class="card-body">
+                        <h5 class="card-title">Nouvelles fonctionnalités d'AgriBot</h5>
+                        <p class="card-text">Découvrez les dernières améliorations apportées à notre AgriBot pour une meilleure identification des plantes.</p>
+                        <a href="/article1" class="btn btn-success">Lire l'article</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Article 2 -->
+            <div class="col-md-4 text-center">
+                <div class="card h-100">
+                    <img src="{{ url_for('static', filename='images/article2.jpg') }}" class="card-img-top" alt="Article 2">
+                    <div class="card-body">
+                        <h5 class="card-title">Guide pratique : Prévisions météo</h5>
+                        <p class="card-text">Apprenez à utiliser nos prévisions météo pour optimiser vos activités agricoles.</p>
+                        <a href="/article2" class="btn btn-success">Lire l'article</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Article 3 -->
+            <div class="col-md-4 text-center">
+                <div class="card h-100">
+                    <img src="{{ url_for('static', filename='images/article3.jpg') }}" class="card-img-top" alt="Article 3">
+                    <div class="card-body">
+                        <h5 class="card-title">Typologie des sols : Nouveaux outils</h5>
+                        <p class="card-text">Explorez les nouvelles fonctionnalités pour analyser les caractéristiques des sols.</p>
+                        <a href="/article3" class="btn btn-success">Lire l'article</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6">
-            <label for="email" class="form-label">Email :</label>
-            <input type="email" class="form-control" id="email" name="email" required>
+        <div class="text-center mt-5">
+            <a href="/articles" class="btn btn-primary">Voir toutes les mises à jour</a>
         </div>
-        <div class="col-12">
-            <label for="message" class="form-label">Message :</label>
-            <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
-        </div>
-        <div class="col-12 text-center">
-            <button type="submit" class="btn btn-success w-100">Envoyer</button>
-        </div>
-    </form>
+    </div>
 </section>
 
-<!-- Animation de fond -->
-<div id="particles-js"></div>
+<!-- Section Communauté et Support -->
+<section class="community-section py-5" style="background-color: #f8f9fa;">
+    <div class="container">
+        <h2 class="text-center mb-5" style="color: #28a745;">Rejoignez notre communauté</h2>
+        <p class="text-center lead">
+            Partagez vos expériences, posez vos questions et obtenez des conseils d'experts agricoles.
+        </p>
+        <div class="text-center">
+            <a href="/communaute" class="btn btn-success">Rejoindre la communauté</a>
+        </div>
+    </div>
+</section>
+
+<!-- Formulaire de Contact -->
+<section class="contact-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5" style="color: #28a745;">Besoin d'aide ? Contactez-nous</h2>
+        <form method="POST" action="/contact" class="row g-3 justify-content-center">
+            <div class="col-md-6">
+                <label for="name" class="form-label">Nom complet :</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="col-md-6">
+                <label for="email" class="form-label">Email :</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="col-12">
+                <label for="message" class="form-label">Message :</label>
+                <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+            </div>
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-success w-100">Envoyer</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Pied de Page -->
+<footer class="bg-dark text-white py-4 mt-5">
+    <div class="container text-center">
+        <ul class="list-inline mb-3">
+            <li class="list-inline-item"><a href="/" class="text-white">Accueil</a></li>
+            <li class="list-inline-item"><a href="/about" class="text-white">À Propos</a></li>
+            <li class="list-inline-item"><a href="/agribot" class="text-white">AgriBot</a></li>
+            <li class="list-inline-item"><a href="/forms-ia" class="text-white">Articles</a></li>
+            <li class="list-inline-item"><a href="/coachs" class="text-white">Coachs</a></li>
+            <li class="list-inline-item"><a href="/communaute" class="text-white">Communauté</a></li>
+        </ul>
+        <div class="social-icons mb-3">
+            <a href="#" class="text-white me-3" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="text-white me-3" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-white" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p class="small">&copy; 2025 AgriHelper. Tous droits réservés.</p>
+    </div>
+</footer>
 {% endblock %}

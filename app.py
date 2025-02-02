@@ -234,7 +234,10 @@ def communaute():
     ]
     return render_template("communaute.html", discussions=discussions)
 
-
+# Articles
+@app.route("/articles")
+def articles():
+    return render_template("articles.html")
 
 if __name__ == "__main__":
     with app.app_context():
