@@ -4,13 +4,22 @@ from dotenv import load_dotenv
 import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
+from flask import Flask, render_template, request, jsonify, redirect, url_for
+import os
+import tensorflow as tf
+from PIL import Image
+import numpy as np
+from transformers import pipeline
 
 # Charger les variables d'environnement depuis .env
 load_dotenv()
 airvisual_api_key = os.getenv("AIRVISUAL_API_KEY")
 openweather_api_key = os.getenv("OPENWEATHER_API_KEY")
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 app = Flask(__name__)
+
+app.config['UPLOAD_FOLDER'] = 'uploads'
 
 # Configuration de la base de données SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
@@ -119,12 +128,7 @@ def typologie_sols():
     }
     return render_template("typologie_sols.html", soil_data=soil_data)
 
-# Route pour le tableau de bord
-@app.route("/dashboard")
-def dashboard():
-    queries = UserQuery.query.all()
-    return render_template("dashboard.html", queries=queries)
-
+# Route pour about
 @app.route("/about")
 def about():
     return render_template("about.html")
@@ -195,7 +199,7 @@ def fetch_soil_data(lat, lon):
 def send_notification(email, message):
     try:
         msg = Message(
-            subject="Alerte AgriHelper", 
+            subject="Alerte agrIA", 
             sender=app.config['MAIL_USERNAME'], 
             body=message 
         )
@@ -203,15 +207,71 @@ def send_notification(email, message):
         print(f"Email envoyé à {email}")
     except Exception as e:
         print(f"Erreur lors de l'envoi de l'email : {e}")
-# Chat bot
-@app.route("/agribot", methods=["GET", "POST"])
+
+# agriBot
+IMAGE_MODEL_PATH = os.path.join("static", "models", "agribot_image_model.h5")
+CHATBOT_MODEL_PATH = os.path.join("static", "models", "chatbot_model")
+
+# Charger le modèle de classification d'images (simulé si pas de modèle réel)
+try:
+    image_model = tf.keras.models.load_model(IMAGE_MODEL_PATH)
+except Exception as e:
+    print("Erreur lors du chargement du modèle d'images :", e)
+    image_model = None
+
+# Charger le modèle de chatbot NLP
+chatbot_pipeline = pipeline("text-generation", model="gpt2")  # Utilisez un modèle Hugging Face
+
+# Route pour la page d'accueil
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+# Route pour la page AgriBot
+@app.route("/agribot")
 def agribot():
-    if request.method == "POST":
-        user_input = request.form.get("user_input")
-        # Simuler une réponse de l'IA (remplacez cela par une vraie API IA)
-        bot_response = f"Voici une suggestion basée sur votre demande : {user_input}"
-        return render_template("agribot.html", bot_response=bot_response)
-    return render_template("agribot.html", bot_response=None)
+    return render_template("agribot.html")
+
+# API pour prédire une image
+@app.route("/predict_image", methods=["POST"])
+def predict_image():
+    if not image_model:
+        return jsonify({"error": "Modèle d'images non disponible"}), 500
+
+    if 'file' not in request.files:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    # Sauvegarder l'image
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+    file.save(filepath)
+
+    # Prétraitement de l'image
+    image = Image.open(filepath).resize((224, 224))
+    image_array = np.array(image) / 255.0
+    image_array = np.expand_dims(image_array, axis=0)
+
+    # Prédiction
+    predictions = image_model.predict(image_array)
+    predicted_class = np.argmax(predictions, axis=1)
+
+    # Retourner le résultat
+    class_labels = ["Sain", "Maladie 1", "Maladie 2"]  # Remplacez par vos vrais labels
+    return jsonify({"class": class_labels[int(predicted_class[0])]})
+
+# API pour le chatbot
+@app.route("/chatbot", methods=["POST"])
+def chatbot():
+    user_input = request.form.get("question")
+    if not user_input:
+        return jsonify({"error": "No question provided"}), 400
+
+    # Générer une réponse
+    response = chatbot_pipeline(user_input, max_length=50, num_return_sequences=1)[0]['generated_text']
+    return jsonify({"response": response})
 
 # Coachs
 @app.route("/coachs")
@@ -239,7 +299,10 @@ def communaute():
 def articles():
     return render_template("articles.html")
 
+
 if __name__ == "__main__":
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     with app.app_context():
         db.create_all()
     app.run(debug=True)
+    

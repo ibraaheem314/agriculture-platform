@@ -159,3 +159,30 @@ footer .social-icons a:hover {
 .updates-section .btn:hover {
     background-color: var(--secondary-color); /* Jaune au survol */
 }
+
+/* Styles pour AgriBot */
+#prediction-result, #chatbot-response {
+    font-size: 1.2rem;
+    color: #28a745;
+    margin-top: 20px;
+}
+form {
+    max-width: 400px;
+    margin: auto;
+}
+input[type="file"], input[type="text"] {
+    border: 1px solid #ced4da;
+    padding: 10px;
+    border-radius: 5px;
+}
+button {
+    background-color: #28a745;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #FFC107;
+}
