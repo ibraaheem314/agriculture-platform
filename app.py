@@ -190,8 +190,8 @@ def fetch_soil_data(lat, lon):
     except Exception as e:
         print(f"Erreur inattendue : {e}")
         return None
-
-
+    
+    
 def send_notification(email, message):
     try:
         msg = Message(
@@ -203,6 +203,38 @@ def send_notification(email, message):
         print(f"Email envoyé à {email}")
     except Exception as e:
         print(f"Erreur lors de l'envoi de l'email : {e}")
+# Chat bot
+@app.route("/agribot", methods=["GET", "POST"])
+def agribot():
+    if request.method == "POST":
+        user_input = request.form.get("user_input")
+        # Simuler une réponse de l'IA (remplacez cela par une vraie API IA)
+        bot_response = f"Voici une suggestion basée sur votre demande : {user_input}"
+        return render_template("agribot.html", bot_response=bot_response)
+    return render_template("agribot.html", bot_response=None)
+
+# Coachs
+@app.route("/coachs")
+def coachs():
+    # Liste fictive de coachs (remplacez cela par une base de données réelle)
+    coaches = [
+        {"name": "Dr. Amadou", "specialty": "Agriculture durable", "email": "amadou@example.com"},
+        {"name": "Fatou Diarra", "specialty": "Gestion des sols", "email": "fatou@example.com"},
+        {"name": "Issa Traoré", "specialty": "Prévisions météo", "email": "issa@example.com"},
+    ]
+    return render_template("coachs.html", coaches=coaches)
+
+# Communauté
+@app.route("/communaute")
+def communaute():
+    # Exemple de discussions fictives (remplacez cela par une base de données réelle)
+    discussions = [
+        {"title": "Comment améliorer le rendement du maïs ?", "author": "Jean", "date": "2023-10-10"},
+        {"title": "Problème de sécheresse dans ma région", "author": "Fatima", "date": "2023-10-09"},
+    ]
+    return render_template("communaute.html", discussions=discussions)
+
+
 
 if __name__ == "__main__":
     with app.app_context():

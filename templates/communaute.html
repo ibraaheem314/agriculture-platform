@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Communauté - IA Agri{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Rejoignez notre Communauté</h2>
+    <p class="text-center lead">Partagez vos expériences et posez vos questions.</p>
+    <div class="row mt-4">
+        {% for discussion in discussions %}
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ discussion.title }}</h5>
+                    <p class="card-text">Par {{ discussion.author }} le {{ discussion.date }}</p>
+                    <a href="#" class="btn btn-success">Voir la discussion</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

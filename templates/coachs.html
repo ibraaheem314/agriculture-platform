@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Coachs - IA Agri{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Nos Coachs Agricoles</h2>
+    <p class="text-center lead">Des experts à votre service pour répondre à vos questions.</p>
+    <div class="row mt-4">
+        {% for coach in coaches %}
+        <div class="col-md-4 text-center">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ coach.name }}</h5>
+                    <p class="card-text">{{ coach.specialty }}</p>
+                    <a href="mailto:{{ coach.email }}" class="btn btn-success">Contacter</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

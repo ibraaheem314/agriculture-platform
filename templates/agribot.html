@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}AgriBot - IA Agri{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Interrogez notre AgriBot</h2>
+    <p class="text-center lead">Posez vos questions sur les plantes, les maladies ou les pratiques agricoles.</p>
+    <form method="POST" class="mt-4">
+        <div class="input-group mb-3">
+            <input type="text" name="user_input" class="form-control" placeholder="Exemple : Comment traiter la rouille du blé ?" required>
+            <button class="btn btn-success" type="submit">Demander</button>
+        </div>
+    </form>
+    {% if bot_response %}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Réponse de l'AgriBot :</h5>
+            <p class="card-text">{{ bot_response }}</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
