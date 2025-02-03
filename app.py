@@ -1,4 +1,3 @@
-from flask import Flask, render_template, request, redirect, url_for
 import requests
 from dotenv import load_dotenv
 import os
@@ -9,6 +8,7 @@ import torch
 import torchvision.transforms as transforms
 from PIL import Image
 import numpy as np
+import base64
 from transformers import pipeline
 
 # Charger les variables d'environnement depuis .env
@@ -209,32 +209,79 @@ def send_notification(email, message):
         print(f"Erreur lors de l'envoi de l'email : {e}")
 
 # agriBot
-# Chemins des modèles
-IMAGE_MODEL_PATH = os.path.join("static", "models", "agribot_image_model.pth")
-CHATBOT_MODEL_PATH = os.path.join("static", "models", "chatbot_model")
+PLANT_ID_API_KEY = "yZcADod0oIHOJWAaGdxyu66e8CQAMvNShYzprQJsKOSlzBOUF0"
+chatbot_pipeline = pipeline("text-generation", model="gpt2")
 
-# Charger le modèle de classification d'images (PyTorch)
-try:
-    image_model = torch.load(IMAGE_MODEL_PATH, map_location=torch.device('cpu'))
-    image_model.eval()  # Mettre le modèle en mode évaluation
-except Exception as e:
-    print("Erreur lors du chargement du modèle d'images :", e)
-    image_model = None
-
-# Charger le modèle de chatbot NLP
-chatbot_pipeline = pipeline("text-generation", model="gpt2")  # Utilisez un modèle Hugging Face
-
-# Prétraitement pour les images
-transform = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-])
 # Route pour la page AgriBot
 @app.route("/agribot")
 def agribot():
     return render_template("agribot.html")
 
+# API pour prédire une image avec Plant.id
+@app.route("/predict_image", methods=["POST"])
+def predict_image():
+    if 'file' not in request.files:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    # Sauvegarder l'image
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+    file.save(filepath)
+
+    # Appeler l'API Plant.id
+    try:
+        with open(filepath, "rb") as img_file:
+            img_data = base64.b64encode(img_file.read()).decode("utf-8")
+            response = requests.post(
+                "https://api.plant.id/v2/identify",
+                headers={"Content-Type": "application/json"},
+                json={
+                    "api_key": PLANT_ID_API_KEY,
+                    "images": [f"data:image/jpeg;base64,{img_data}"],
+                    "modifiers": ["similar_images"],
+                    "plant_language": "fr",
+                    "plant_details": ["common_names", "url"]
+                }
+            )
+
+        # Vérifier la réponse de l'API
+        if response.status_code == 200:
+            result = response.json()
+            suggestions = result.get("suggestions", [])
+            if suggestions:
+                plant_name = suggestions[0].get("plant_name", "Plante non identifiée")
+                return jsonify({"class": plant_name})
+            else:
+                return jsonify({"error": "Aucune suggestion trouvée."}), 400
+        else:
+            return jsonify({"error": f"Erreur API : {response.text}"}), 500
+    except Exception as e:
+        return jsonify({"error": f"Erreur interne : {str(e)}"}), 500
+
+# API pour le chatbot
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+# Charger le modèle DialoGPT-small
+tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-small")
+chatbot_model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-small")
+
+@app.route("/chatbot", methods=["POST"])
+def chatbot():
+    user_input = request.form.get("question")
+    if not user_input:
+        return jsonify({"error": "No question provided"}), 400
+
+    # Générer une réponse avec DialoGPT-small
+    try:
+        inputs = tokenizer.encode(user_input + tokenizer.eos_token, return_tensors="pt")
+        outputs = chatbot_model.generate(inputs, max_length=100, pad_token_id=tokenizer.eos_token_id)
+        response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        return jsonify({"response": response})
+    except Exception as e:
+        return jsonify({"error": f"Erreur lors de la génération de la réponse : {str(e)}"}), 500
 
 # Coachs
 @app.route("/coachs")
@@ -260,12 +307,14 @@ def communaute():
 # Articles
 @app.route("/articles")
 def articles():
-    return render_template("articles.html")
-
+    # Exemple d'articles fictifs (remplacez cela par une base de données réelle)
+    articles = [
+        {"title": "Les meilleures pratiques pour l'agriculture durable", "author": "Dr. Amadou", "date": "2023-10-08"},
+        {"title": "Comment gérer les sols en cas de sécheresse ?", "author": "Fatou Diarra", "date": "2023-10-07"},
+    ]
+    return render_template("articles.html", articles=articles)
 
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()  # Crée les tables de la base de données si elles n'existent pas
+    # Créer le dossier d'upload s'il n'existe pas
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     app.run(debug=True)
-    
