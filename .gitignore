@@ -6,6 +6,7 @@ __pycache__/
 .env
 
 # Dépendances
+/build/
 venv/
 env/
 .venv/
@@ -17,4 +18,5 @@ pip-wheel-metadata/
 
 # Logs et bases de données
 *.log
+*.tmp
 *.sqlite3

@@ -5,8 +5,8 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
 from flask import Flask, render_template, request, jsonify, redirect, url_for
-import os
-import tensorflow as tf
+import torch
+import torchvision.transforms as transforms
 from PIL import Image
 import numpy as np
 from transformers import pipeline
@@ -15,7 +15,7 @@ from transformers import pipeline
 load_dotenv()
 airvisual_api_key = os.getenv("AIRVISUAL_API_KEY")
 openweather_api_key = os.getenv("OPENWEATHER_API_KEY")
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 
 app = Flask(__name__)
 
@@ -209,12 +209,14 @@ def send_notification(email, message):
         print(f"Erreur lors de l'envoi de l'email : {e}")
 
 # agriBot
-IMAGE_MODEL_PATH = os.path.join("static", "models", "agribot_image_model.h5")
+# Chemins des modèles
+IMAGE_MODEL_PATH = os.path.join("static", "models", "agribot_image_model.pth")
 CHATBOT_MODEL_PATH = os.path.join("static", "models", "chatbot_model")
 
-# Charger le modèle de classification d'images (simulé si pas de modèle réel)
+# Charger le modèle de classification d'images (PyTorch)
 try:
-    image_model = tf.keras.models.load_model(IMAGE_MODEL_PATH)
+    image_model = torch.load(IMAGE_MODEL_PATH, map_location=torch.device('cpu'))
+    image_model.eval()  # Mettre le modèle en mode évaluation
 except Exception as e:
     print("Erreur lors du chargement du modèle d'images :", e)
     image_model = None
@@ -222,56 +224,17 @@ except Exception as e:
 # Charger le modèle de chatbot NLP
 chatbot_pipeline = pipeline("text-generation", model="gpt2")  # Utilisez un modèle Hugging Face
 
-# Route pour la page d'accueil
-@app.route("/")
-def home():
-    return render_template("index.html")
-
+# Prétraitement pour les images
+transform = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+])
 # Route pour la page AgriBot
 @app.route("/agribot")
 def agribot():
     return render_template("agribot.html")
 
-# API pour prédire une image
-@app.route("/predict_image", methods=["POST"])
-def predict_image():
-    if not image_model:
-        return jsonify({"error": "Modèle d'images non disponible"}), 500
-
-    if 'file' not in request.files:
-        return jsonify({"error": "No file uploaded"}), 400
-
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({"error": "No selected file"}), 400
-
-    # Sauvegarder l'image
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-    file.save(filepath)
-
-    # Prétraitement de l'image
-    image = Image.open(filepath).resize((224, 224))
-    image_array = np.array(image) / 255.0
-    image_array = np.expand_dims(image_array, axis=0)
-
-    # Prédiction
-    predictions = image_model.predict(image_array)
-    predicted_class = np.argmax(predictions, axis=1)
-
-    # Retourner le résultat
-    class_labels = ["Sain", "Maladie 1", "Maladie 2"]  # Remplacez par vos vrais labels
-    return jsonify({"class": class_labels[int(predicted_class[0])]})
-
-# API pour le chatbot
-@app.route("/chatbot", methods=["POST"])
-def chatbot():
-    user_input = request.form.get("question")
-    if not user_input:
-        return jsonify({"error": "No question provided"}), 400
-
-    # Générer une réponse
-    response = chatbot_pipeline(user_input, max_length=50, num_return_sequences=1)[0]['generated_text']
-    return jsonify({"response": response})
 
 # Coachs
 @app.route("/coachs")
@@ -301,8 +264,8 @@ def articles():
 
 
 if __name__ == "__main__":
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     with app.app_context():
-        db.create_all()
+        db.create_all()  # Crée les tables de la base de données si elles n'existent pas
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     app.run(debug=True)
     
