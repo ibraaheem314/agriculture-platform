@@ -21,9 +21,9 @@ openweather_api_key = os.getenv("OPENWEATHER_API_KEY")
 os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 
 app = Flask(__name__)
-app.secret_key = "AGRI3.1415@"
 
 # Clés API
+app.secret_key = "AGRI3.1415@"
 OPENWEATHER_API_KEY = "1707374d07315cd524c6e04d0b0b734b"
 AIRVISUAL_API_KEY = "b9d331a5-0c64-42ef-84ca-53779858964d"
 
