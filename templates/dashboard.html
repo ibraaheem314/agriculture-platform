@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Tableau de Bord - AgriHelper{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center mb-5">Tableau de Bord</h2>
+
+    <!-- Statistiques Agricoles -->
+    <div class="row mb-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-3x mb-3" style="color: #28a745;"></i>
+                    <h5 class="card-title">Rendement Moyen</h5>
+                    <p class="card-text">{{ user.crop_yield }} tonnes/ha</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-cloud-sun fa-3x mb-3" style="color: #FFC107;"></i>
+                    <h5 class="card-title">Prévisions Météo</h5>
+                    <p class="card-text">{{ weather_forecast }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-seedling fa-3x mb-3" style="color: #28a745;"></i>
+                    <h5 class="card-title">Typologie des Sols</h5>
+                    <p class="card-text">{{ soil_analysis }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Historique des Interactions -->
+    <h3 class="mb-4">Historique des Interactions</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Action</th>
+                <th>Détails</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in history %}
+            <tr>
+                <td>{{ entry.date }}</td>
+                <td>{{ entry.action }}</td>
+                <td>{{ entry.details }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

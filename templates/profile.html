@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Profil - AgriHelper{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center mb-5">👤 Mon Profil</h2>
+    <form method="POST" action="/update_profile">
+        <div class="mb-3">
+            <label for="username" class="form-label">👤 Nom d'utilisateur</label>
+            <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">📧 Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="region" class="form-label">🌍 Région Agricole</label>
+            <input type="text" class="form-control" id="region" name="region" value="{{ user.region }}">
+        </div>
+        <div class="mb-3">
+            <label for="crop_type" class="form-label">🌱 Type de Culture</label>
+            <input type="text" class="form-control" id="crop_type" name="crop_type" value="{{ user.crop_type }}">
+        </div>
+        <button type="submit" class="btn btn-success">Mettre à jour</button>
+    </form>
+</div>
+{% endblock %}

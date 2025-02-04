@@ -6,25 +6,10 @@
 <div class="container py-5">
     <h2 class="text-center mb-5" style="color: #28a745;">AgriBot</h2>
 
-    <!-- Section Identification de Plantes -->
-    <div class="row mb-5">
-        <div class="col-md-6 offset-md-3 text-center">
-            <h4>Identification de Plantes/Maladies</h4>
-            <p>Téléchargez une image pour identifier une plante ou une maladie.</p>
-            <form id="image-upload-form" enctype="multipart/form-data">
-                <input type="file" name="file" id="file" class="form-control mb-3" accept="image/*" required>
-                <button type="submit" class="btn btn-success">Analyser</button>
-            </form>
-            <div id="prediction-result" class="mt-3"></div>
-        </div>
-    </div>
-
-    <!-- Section Chatbot -->
-    <div class="row">
-        <div class="col-md-6 offset-md-3 text-center">
-            <h4>Chatbot Agricole</h4>
-            <p>Posez vos questions sur l'agriculture.</p>
-            <form id="chatbot-form">
+    <!-- Formulaire pour poser des questions -->
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <form id="chatbot-form" method="POST">
                 <input type="text" name="question" id="question" class="form-control mb-3" placeholder="Posez votre question ici" required>
                 <button type="submit" class="btn btn-success">Envoyer</button>
             </form>
@@ -35,38 +20,21 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // Script pour l'upload d'images
-    $("#image-upload-form").on("submit", function(e) {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append("file", $("#file")[0].files[0]);
-
-        $.ajax({
-            url: "/predict_image",
-            type: "POST",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                $("#prediction-result").html(`<strong>Résultat :</strong> ${response.class}`);
-            },
-            error: function() {
-                $("#prediction-result").html("<strong>Erreur :</strong> Impossible de traiter l'image.");
-            }
-        });
-    });
-
-    // Script pour le chatbot
+    // Script pour envoyer la question via AJAX
     $("#chatbot-form").on("submit", function(e) {
         e.preventDefault();
         const question = $("#question").val();
 
         $.ajax({
-            url: "/chatbot",
+            url: "/agribot",
             type: "POST",
             data: { question: question },
             success: function(response) {
-                $("#chatbot-response").html(`<strong>Réponse :</strong> ${response.response}`);
+                if (response.error) {
+                    $("#chatbot-response").html(`<strong>Erreur :</strong> ${response.error}`);
+                } else {
+                    $("#chatbot-response").html(`<strong>Réponse :</strong> ${response.response}`);
+                }
             },
             error: function() {
                 $("#chatbot-response").html("<strong>Erreur :</strong> Impossible de générer une réponse.");

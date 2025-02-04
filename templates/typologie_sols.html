@@ -1,13 +1,34 @@
 {% extends "base.html" %}
 
-{% block title %}Typologie des sols - AgriHelper{% endblock %}
+{% block title %}Typologie des Sols - AgriHelper{% endblock %}
 
 {% block content %}
-<h2 class="text-center mb-4">Typologie des sols en temps réel</h2>
-<div class="card text-center">
-    <div class="card-body">
-        <p class="card-text">Teneur en argile : {{ soil_data }}%</p>
+<div class="container py-5">
+    <h2 class="text-center mb-5">Typologie des Sols</h2>
+
+    <!-- Formulaire pour saisir la localisation -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-6 text-center">
+            <form method="POST" action="/typologie-sols">
+                <div class="input-group">
+                    <input type="text" name="city" class="form-control" placeholder="Entrez votre ville" value="{{ default_city }}">
+                    <button type="submit" class="btn btn-success">Rechercher</button>
+                </div>
+            </form>
+        </div>
     </div>
+
+    <!-- Affichage des données sur les sols -->
+    {% if soil_data.get("error") %}
+        <p class="text-danger text-center">{{ soil_data.error }}</p>
+    {% else %}
+        <div class="row">
+            <div class="col-md-6 offset-md-3 text-center">
+                <i class="fas fa-seedling fa-5x mb-4" style="color: #28a745;"></i>
+                <h4>Ville : {{ soil_data.city }}</h4>
+                <p>Teneur en Argile : {{ soil_data.clay_content }}%</p>
+            </div>
+        </div>
+    {% endif %}
 </div>
-<a href="/" class="btn btn-primary mt-4">Retour à l'accueil</a>
 {% endblock %}

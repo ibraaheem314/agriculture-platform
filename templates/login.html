@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Connexion - AgriHelper{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center mb-5">Connexion</h2>
+    <form method="POST" action="/login">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Mot de Passe</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-success">Se Connecter</button>
+    </form>
+</div>
+{% endblock %}

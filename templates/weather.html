@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Prévisions Météo - AgriHelper{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center mb-5">Prévisions Météo</h2>
+
+    <!-- Formulaire pour saisir la localisation -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-6 text-center">
+            <form method="POST" action="/weather">
+                <div class="input-group">
+                    <input type="text" name="city" class="form-control" placeholder="Entrez votre ville" value="{{ default_city }}">
+                    <button type="submit" class="btn btn-success">Rechercher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Affichage des prévisions météo -->
+    {% if weather_data.get("error") %}
+        <p class="text-danger text-center">{{ weather_data.error }}</p>
+    {% else %}
+        <div class="row mb-5">
+            <div class="col-md-6 offset-md-3 text-center">
+                <i class="fas fa-cloud-sun fa-5x mb-4" style="color: #FFC107;"></i>
+                <h4>Ville : {{ weather_data.city }}</h4>
+                <p>Température : {{ weather_data.temperature }}</p>
+                <p>Description : {{ weather_data.description }}</p>
+                <p>Humidité : {{ weather_data.humidity }}</p>
+                <p>Vitesse du vent : {{ weather_data.wind_speed }}</p>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Affichage des données de pollution -->
+    <h2 class="text-center mb-5">Qualité de l'Air</h2>
+    {% if pollution_data.get("error") %}
+        <p class="text-danger text-center">{{ pollution_data.error }}</p>
+    {% else %}
+        <div class="row">
+            <div class="col-md-6 offset-md-3 text-center">
+                <i class="fas fa-smog fa-5x mb-4" style="color: #FF5733;"></i>
+                <h4>Ville : {{ pollution_data.city }}</h4>
+                <p>Indice de Qualité de l'Air (AQI) : {{ pollution_data.aqi }}</p>
+                <p>Polluant principal : {{ pollution_data.quality }}</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

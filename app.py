@@ -10,18 +10,26 @@ from PIL import Image
 import numpy as np
 import base64
 from transformers import pipeline
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from werkzeug.security import generate_password_hash, check_password_hash
+import sqlite3
 
 # Charger les variables d'environnement depuis .env
 load_dotenv()
 airvisual_api_key = os.getenv("AIRVISUAL_API_KEY")
 openweather_api_key = os.getenv("OPENWEATHER_API_KEY")
-
+os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 
 app = Flask(__name__)
+app.secret_key = "AGRI3.1415@"
 
-app.config['UPLOAD_FOLDER'] = 'uploads'
+# Clés API
+OPENWEATHER_API_KEY = "1707374d07315cd524c6e04d0b0b734b"
+AIRVISUAL_API_KEY = "b9d331a5-0c64-42ef-84ca-53779858964d"
 
 # Configuration de la base de données SQLite
+
+app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -42,160 +50,156 @@ class UserQuery(db.Model):
     weather_data = db.Column(db.JSON, nullable=True)
     advice = db.Column(db.String(500), nullable=True)
 
+# Connexion à la base de données
+def get_db_connection():
+    conn = sqlite3.connect('AgriHelper.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
 # Route pour la page d'accueil
 @app.route("/", methods=["GET", "POST"])
 def home():
-    if request.method == "POST":
-        location = request.form.get("location")
-        coordinates = request.form.get("coordinates")
-
-        # Validation : Au moins un des deux champs doit être rempli
-        if not location and not coordinates:
-            return render_template("error.html", message="Veuillez entrer une localisation ou des coordonnées GPS.")
-
-        # Si des coordonnées sont fournies, utilisez-les directement
-        if coordinates:
-            try:
-                lat, lon = map(float, coordinates.split(","))
-            except ValueError:
-                return render_template("error.html", message="Coordonnées GPS invalides.")
-        else:
-            # Utiliser une API de géocodage pour obtenir les coordonnées
-            url = f"https://nominatim.openstreetmap.org/search?q={location}&format=json"
-            headers = {
-                "User-Agent": "AgriHelper/1.0"  # Respectez les règles de Nominatim
-            }
-            try:
-                response = requests.get(url, headers=headers, timeout=10)
-                if response.status_code == 200 and response.json():
-                    data = response.json()[0]
-                    lat, lon = float(data["lat"]), float(data["lon"])
-                else:
-                    return render_template("error.html", message="Localisation non trouvée. Veuillez vérifier votre saisie.")
-            except requests.exceptions.ConnectionError as e:
-                return render_template("error.html", message="Impossible de se connecter à l'API de géocodage. Veuillez réessayer plus tard.")
-
-        # Récupérer les données météo, pollution et sols
-        weather_data = fetch_weather_data(lat, lon)
-        pollution_data = fetch_pollution_data(lat, lon)
-        soil_data = fetch_soil_data(lat, lon)
-
-        # Rediriger vers la page détaillée
-        return render_template(
-            "details.html",
-            location=location,
-            lat=lat,
-            lon=lon,
-            weather_data=weather_data,
-            pollution_data=pollution_data,
-            soil_data=soil_data
-        )
-
     return render_template("index.html")
-
-# Route pour les prévisions météo
-@app.route("/meteo-semaine")
-def meteo_semaine():
-    # Exemple : Récupérer des données météo globales ou par défaut
-    weather_data = {
-        "city": "Ouagadougou",
-        "forecast": [
-            {"date": "2023-10-15", "temp": 30, "description": "Ensoleillé"},
-            {"date": "2023-10-16", "temp": 28, "description": "Partiellement nuageux"},
-        ],
-    }
-    return render_template("meteo_semaine.html", weather_data=weather_data)
-
-# Route pour les cartes de pollution
-@app.route("/pollution")
-def pollution():
-    # Exemple : Récupérer des données de pollution globales ou par défaut
-    pollution_data = {
-        "city": "Ouagadougou",
-        "aqi": 50,
-        "quality": "Bon",
-    }
-    return render_template("pollution.html", pollution_data=pollution_data)
-
-# Route pour la typologie des sols
-@app.route("/typologie-sols")
-def typologie_sols():
-    # Exemple : Récupérer des données sur les sols globales ou par défaut
-    soil_data = {
-        "region": "Centre",
-        "clay_percentage": 35.6,
-        "soil_type": "Argileux",
-    }
-    return render_template("typologie_sols.html", soil_data=soil_data)
 
 # Route pour about
 @app.route("/about")
 def about():
     return render_template("about.html")
 
-# Route pour le formulaire de contact
-@app.route("/contact", methods=["GET", "POST"])
-def contact():
+@app.route("/contact_form", methods=["GET", "POST"])
+def contact_form():
     if request.method == "POST":
-        name = request.form.get("name")
-        email = request.form.get("email")
-        message = request.form.get("message")
-
-        # Envoyer une notification par email
-        send_notification(email, f"Message reçu de {name} : {message}")
-        return render_template("contact_success.html")
+        # Traiter le formulaire de contact
+        flash("Votre message a été envoyé avec succès.", "success")
+        return redirect(url_for("contact_success"))
     return render_template("contact_form.html")
 
-# Fonction pour récupérer les prévisions météo
-def fetch_weather_data(lat, lon):
-    api_key = os.getenv("OPENWEATHER_API_KEY")
-    url = f"http://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={api_key}&units=metric"
-    response = requests.get(url)
-    if response.status_code == 200:
-        data = response.json()
-        daily_forecast = []
-        for entry in data["list"]:
-            daily_forecast.append({
-                "date": entry["dt_txt"],
-                "temp": entry["main"]["temp"],
-                "description": entry["weather"][0]["description"]
-            })
-        return daily_forecast
-    return None
+@app.route("/contact_success")
+def contact_success():
+    return render_template("contact_success.html")
 
-# Fonction pour récupérer les données de pollution
-def fetch_pollution_data(lat, lon):
-    api_key = os.getenv("AIRVISUAL_API_KEY")
-    url = f"https://api.airvisual.com/v2/nearest_city?lat={lat}&lon={lon}&key={api_key}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        data = response.json()
-        return {
-            "city": data["data"]["city"],
-            "aqi": data["data"]["current"]["pollution"]["aqius"],
-            "quality": data["data"]["current"]["pollution"]["mainus"]
-        }
-    return None
+@app.route("/error")
+def error():
+    return render_template("error.html"), 404
 
-# Fonction pour récupérer les données sur les sols
+# Routes utilisateur
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        # Logique de connexion
+        flash("Connexion réussie !", "success")
+        return redirect(url_for("dashboard"))
+    return render_template("login.html")
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        # Logique d'inscription
+        flash("Inscription réussie ! Vous pouvez maintenant vous connecter.", "success")
+        return redirect(url_for("login"))
+    return render_template("register.html")
+
+@app.route("/logout")
+def logout():
+    session.pop("user_id", None)
+    flash("Vous avez été déconnecté.", "info")
+    return redirect(url_for("home"))
+
+# Fonctions utilitaires
 def fetch_soil_data(lat, lon):
     try:
         url = f"https://rest.soilgrids.org/query?lon={lon}&lat={lat}&attributes=clay"
         response = requests.get(url, timeout=30)
         if response.status_code == 200:
             data = response.json()
-            return data["properties"]["layers"][0]["clay"]  # Exemple de données
+            clay_content = data["properties"]["layers"][0]["clay"]  # Teneur en argile
+            return {"clay_content": clay_content}
         else:
             print(f"Erreur lors de la récupération des données sur les sols : {response.status_code}")
-            return None
-    except requests.exceptions.ConnectionError as e:
-        print(f"Erreur de connexion : {e}")
-        return None
+            return {"error": "Impossible de récupérer les données sur les sols."}
     except Exception as e:
         print(f"Erreur inattendue : {e}")
-        return None
-    
-    
+        return {"error": "Une erreur est survenue lors de la récupération des données."}
+
+def fetch_weather_data(lat, lon):
+    url = f"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={OPENWEATHER_API_KEY}&units=metric"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        return {
+            "temperature": f"{data['main']['temp']}°C",
+            "description": data["weather"][0]["description"],
+            "humidity": f"{data['main']['humidity']}%",
+            "wind_speed": f"{data['wind']['speed']} m/s",
+        }
+    else:
+        return {"error": "Impossible de récupérer les données météo."}
+
+def fetch_pollution_data(lat, lon):
+    url = f"https://api.airvisual.com/v2/nearest_city?lat={lat}&lon={lon}&key={AIRVISUAL_API_KEY}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        return {
+            "aqi": data["data"]["current"]["pollution"]["aqius"],
+            "quality": data["data"]["current"]["pollution"]["mainus"]
+        }
+    else:
+        return {"error": "Impossible de récupérer les données de pollution."}
+
+# Route prévisions météo et pollution
+@app.route("/weather", methods=["GET", "POST"])
+def weather():
+    default_city = "Kolda"
+    if request.method == "POST":
+        city = request.form.get("city", default_city).strip()
+    else:
+        city = default_city
+
+    # Récupérer les coordonnées géographiques de la ville via OpenWeatherMap
+    geocoding_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={OPENWEATHER_API_KEY}"
+    response = requests.get(geocoding_url)
+    if response.status_code == 200 and response.json():
+        location = response.json()[0]
+        lat, lon = location["lat"], location["lon"]
+
+        # Récupérer les données météo
+        weather_data = fetch_weather_data(lat, lon)
+        weather_data["city"] = city  # Ajouter le nom de la ville aux données
+
+        # Récupérer les données de pollution
+        pollution_data = fetch_pollution_data(lat, lon)
+        pollution_data["city"] = city  # Ajouter le nom de la ville aux données
+    else:
+        weather_data = {"error": "Ville non trouvée. Veuillez réessayer."}
+        pollution_data = {"error": "Ville non trouvée. Veuillez réessayer."}
+
+    return render_template("weather.html", weather_data=weather_data, pollution_data=pollution_data, default_city=default_city)
+
+
+# Route pour la typologie des sols
+@app.route("/typologie-sols", methods=["GET", "POST"])
+def typologie_sols():
+    default_city = "Kolda"
+    if request.method == "POST":
+        city = request.form.get("city", default_city).strip()
+    else:
+        city = default_city
+
+    # Récupérer les coordonnées géographiques de la ville via OpenWeatherMap
+    geocoding_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={OPENWEATHER_API_KEY}"
+    response = requests.get(geocoding_url)
+    if response.status_code == 200 and response.json():
+        location = response.json()[0]
+        lat, lon = location["lat"], location["lon"]
+        soil_data = fetch_soil_data(lat, lon)
+        soil_data["city"] = city  # Ajouter le nom de la ville aux données
+    else:
+        soil_data = {"error": "Ville non trouvée. Veuillez réessayer."}
+
+    return render_template("typologie_sols.html", soil_data=soil_data, default_city=default_city)
+
+
 def send_notification(email, message):
     try:
         msg = Message(
@@ -212,14 +216,49 @@ def send_notification(email, message):
 PLANT_ID_API_KEY = "yZcADod0oIHOJWAaGdxyu66e8CQAMvNShYzprQJsKOSlzBOUF0"
 chatbot_pipeline = pipeline("text-generation", model="gpt2")
 
-# Route pour la page AgriBot
-@app.route("/agribot")
-def agribot():
-    return render_template("agribot.html")
-
 # API pour prédire une image avec Plant.id
 @app.route("/predict_image", methods=["POST"])
 def predict_image():
+    if 'file' not in request.files:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    # Sauvegarder l'image
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+    file.save(filepath)
+
+    # Appeler l'API Plant.id
+    try:
+        with open(filepath, "rb") as img_file:
+            img_data = base64.b64encode(img_file.read()).decode("utf-8")
+            response = requests.post(
+                "https://api.plant.id/v2/identify",
+                headers={"Content-Type": "application/json"},
+                json={
+                    "api_key": "votre_cle_api_plant_id",
+                    "images": [f"data:image/jpeg;base64,{img_data}"],
+                    "modifiers": ["similar_images"],
+                    "plant_language": "fr",
+                    "plant_details": ["common_names", "url"]
+                }
+            )
+
+        # Vérifier la réponse de l'API
+        if response.status_code == 200:
+            result = response.json()
+            suggestions = result.get("suggestions", [])
+            if suggestions:
+                plant_name = suggestions[0].get("plant_name", "Plante non identifiée")
+                return jsonify({"class": plant_name})
+            else:
+                return jsonify({"error": "Aucune suggestion trouvée."}), 400
+        else:
+            return jsonify({"error": f"Erreur API : {response.text}"}), 500
+    except Exception as e:
+        return jsonify({"error": f"Erreur interne : {str(e)}"}), 500
     if 'file' not in request.files:
         return jsonify({"error": "No file uploaded"}), 400
 
@@ -264,24 +303,38 @@ def predict_image():
 # API pour le chatbot
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-# Charger le modèle DialoGPT-small
-tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-small")
-chatbot_model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-small")
+# ChatBot
+HUGGINGFACE_API_KEY = "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"
+API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium"
 
-@app.route("/chatbot", methods=["POST"])
-def chatbot():
-    user_input = request.form.get("question")
-    if not user_input:
-        return jsonify({"error": "No question provided"}), 400
+tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-medium")
+model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-medium")
 
-    # Générer une réponse avec DialoGPT-small
-    try:
-        inputs = tokenizer.encode(user_input + tokenizer.eos_token, return_tensors="pt")
-        outputs = chatbot_model.generate(inputs, max_length=100, pad_token_id=tokenizer.eos_token_id)
-        response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-        return jsonify({"response": response})
-    except Exception as e:
-        return jsonify({"error": f"Erreur lors de la génération de la réponse : {str(e)}"}), 500
+# API pour le chatbot avec Hugging Face
+@app.route("/agribot", methods=["GET", "POST"])
+def agribot():
+    if request.method == "POST":
+        # Récupérer la question de l'utilisateur
+        user_question = request.form.get("question", "").strip()
+        if not user_question:
+            return jsonify({"error": "Veuillez poser une question."}), 400
+
+        # Appeler l'API Hugging Face
+        try:
+            headers = {"Authorization": f"Bearer {HUGGINGFACE_API_KEY}"}
+            payload = {"inputs": user_question}
+            response = requests.post(API_URL, headers=headers, json=payload)
+            result = response.json()
+
+            if "error" in result:
+                return jsonify({"error": result["error"]}), 500
+
+            return jsonify({"response": result[0]["generated_text"]})
+        except Exception as e:
+            return jsonify({"error": f"Erreur lors de l'appel à l'API : {str(e)}"}), 500
+
+    # Si la méthode est GET, afficher la page HTML
+    return render_template("agribot.html")
 
 # Coachs
 @app.route("/coachs")
@@ -313,6 +366,83 @@ def articles():
         {"title": "Comment gérer les sols en cas de sécheresse ?", "author": "Fatou Diarra", "date": "2023-10-07"},
     ]
     return render_template("articles.html", articles=articles)
+
+# Route pour le Tableau de Bord
+@app.route("/dashboard")
+def user_dashboard():
+    if not session.get("user_id"):
+        flash("Vous devez être connecté pour accéder au tableau de bord.", "danger")
+        return redirect(url_for("login"))
+    return render_template("dashboard.html")
+
+@app.route("/admin/dashboard")
+def admin_dashboard():
+    if not session.get("admin"):
+        flash("Accès réservé aux administrateurs.", "danger")
+        return redirect(url_for("home"))
+    return render_template("admin_dashboard.html")
+
+# Route pour le Profil
+@app.route("/profile", methods=["GET", "POST"])
+def user_profile():
+    if not session.get("user_id"):
+        flash("Vous devez être connecté pour accéder à votre profil.", "danger")
+        return redirect(url_for("login"))
+
+    conn = get_db_connection()
+    user = conn.execute("SELECT * FROM users WHERE id = ?", (session["user_id"],)).fetchone()
+
+    if request.method == "POST":
+        username = request.form.get("username")
+        email = request.form.get("email")
+        region = request.form.get("region")
+        crop_type = request.form.get("crop_type")
+
+        conn.execute("UPDATE users SET username = ?, email = ?, region = ?, crop_type = ? WHERE id = ?",
+                     (username, email, region, crop_type, session["user_id"]))
+        conn.commit()
+        conn.close()
+
+        flash("Profil mis à jour avec succès.", "success")
+        return redirect(url_for("user_profile"))
+
+    return render_template("profile.html", user=user)
+
+# Profil administrateur (si applicable)
+@app.route("/admin/profile", methods=["GET", "POST"])
+def admin_profile():
+    if not session.get("admin"):
+        flash("Accès réservé aux administrateurs.", "danger")
+        return redirect(url_for("home"))
+
+    # Logique spécifique au profil administrateur
+    return render_template("admin_profile.html")
+
+# Alerte météo
+@app.route("/send_weather_alert", methods=["POST"])
+def send_weather_alert():
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Non connecté"}), 401
+
+    # Simuler une alerte météo
+    notification = {
+        "title": "Alerte Météo",
+        "message": "Pluie excessive prévue demain. Protégez vos cultures.",
+    }
+
+    # Stocker la notification dans la base de données
+    conn = get_db_connection()
+    conn.execute("INSERT INTO notifications (user_id, title, message) VALUES (?, ?, ?)",
+                 (user_id, notification["title"], notification["message"]))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"success": "Notification envoyée"})
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("error.html"), 404
 
 if __name__ == "__main__":
     # Créer le dossier d'upload s'il n'existe pas

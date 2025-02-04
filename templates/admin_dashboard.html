@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Tableau de Bord Administrateur - AgriHelper{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center mb-5">Tableau de Bord Administrateur</h2>
+
+    <!-- Statistiques Globales -->
+    <div class="row mb-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-users fa-3x mb-3" style="color: #28a745;"></i>
+                    <h5 class="card-title">Nombre d'Utilisateurs</h5>
+                    <p class="card-text">{{ stats.user_count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-bar fa-3x mb-3" style="color: #FFC107;"></i>
+                    <h5 class="card-title">Activité Totale</h5>
+                    <p class="card-text">{{ stats.total_activity }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-exclamation-triangle fa-3x mb-3" style="color: #FF5733;"></i>
+                    <h5 class="card-title">Signalements</h5>
+                    <p class="card-text">{{ stats.report_count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Liste des Utilisateurs -->
+    <h3 class="mb-4">Liste des Utilisateurs</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom d'utilisateur</th>
+                <th>Email</th>
+                <th>Rôle</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.role }}</td>
+                <td>
+                    <a href="/admin/edit_user/{{ user.id }}" class="btn btn-sm btn-warning">Modifier</a>
+                    <a href="/admin/delete_user/{{ user.id }}" class="btn btn-sm btn-danger">Supprimer</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
