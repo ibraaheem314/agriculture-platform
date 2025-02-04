@@ -305,7 +305,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 # ChatBot
 HUGGINGFACE_API_KEY = "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"
-API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium"
+API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base"
 
 tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-medium")
 model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-medium")
@@ -322,7 +322,14 @@ def agribot():
         # Appeler l'API Hugging Face
         try:
             headers = {"Authorization": f"Bearer {HUGGINGFACE_API_KEY}"}
-            payload = {"inputs": user_question}
+            payload = {
+                "inputs": f"Réponds en français : {user_question}",
+                "parameters": {
+                    "max_length": 100,
+                    "temperature": 0.7,
+                    "top_p": 0.9
+                }
+            }
             response = requests.post(API_URL, headers=headers, json=payload)
             result = response.json()
 
