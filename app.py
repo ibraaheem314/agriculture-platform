@@ -415,7 +415,7 @@ def user_profile():
 
     return render_template("profile.html", user=user)
 
-# Profil administrateur (si applicable)
+# Profil administrateur
 @app.route("/admin/profile", methods=["GET", "POST"])
 def admin_profile():
     if not session.get("admin"):
@@ -446,6 +446,7 @@ def send_weather_alert():
     conn.close()
 
     return jsonify({"success": "Notification envoyée"})
+
 
 @app.errorhandler(404)
 def page_not_found(e):
