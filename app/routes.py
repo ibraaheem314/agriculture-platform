@@ -137,12 +137,14 @@ def agribot():
                 "Content-Type": "application/json",
                 "HTTP-Referer": "http://localhost:5000"
             }
-
             payload = {
-                "model": "mistralai/mistral-7b-instruct",
-                "messages": [
-                {"role": "system", "content": "Tu es AgriBot, un assistant agricole francophone expert."},
-                {"role": "user", "content": user_input}]}
+                    "model": "mistralai/mistral-7b-instruct",  # Ou un autre modèle pris en charge par OpenRouter
+                    "messages": [
+                {
+                    "role": "system",
+                    "content": "Tu es AgriBot, un assistant virtuel spécialisé en agriculture, agroécologie, météorologie agricole, IA appliquée aux cultures, gestion des sols et élevage durable. Tu réponds en français de manière claire, utile et bienveillante, même à des personnes peu technophiles. Tu privilégies l'agriculture durable et les conseils pratiques adaptés au contexte africain et tropical. Tu peux aussi proposer des outils modernes (IA, IoT, etc.) pour aider les agriculteurs."
+                },
+            {"role": "user", "content": user_input}]}
 
             response = requests.post(url, headers=headers, json=payload, timeout=30)
             data = response.json()
