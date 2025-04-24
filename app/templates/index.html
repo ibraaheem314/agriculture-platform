@@ -6,12 +6,10 @@
 {% block content %}
 
 <!-- HERO MODERN -->
-<section class="hero-modern d-flex align-items-center justify-content-center text-center text-white">
+<section class="hero-modern">
   <div class="container">
-    <h1 class="display-3 fw-bold animate__animated animate__fadeInDown">L’IA au service de l’agriculture durable</h1>
-    <p class="lead animate__animated animate__fadeInUp animate__delay-1s">
-      Des outils précis. Des cultures optimisées. Une nature respectée.
-    </p>
+    <h1 class="display-4 fw-bold animate__animated animate__fadeInDown">L’IA au service de l’agriculture durable</h1>
+    <p class="lead">Des outils précis. Des cultures optimisées. Une nature respectée.</p>
     <a href="#nos-solutions" class="btn btn-warning btn-lg mt-4 animate__animated animate__fadeInUp animate__delay-2s">
       Explorer les solutions
     </a>
@@ -19,49 +17,51 @@
 </section>
 
 <!-- SOLUTIONS AGRIHELPER -->
-<section id="nos-solutions" class="py-5 bg-light">
+<section id="nos-solutions" class="bg-white py-5">
   <div class="container">
-    <h2 class="text-center mb-5" style="color: #00382c;">Nos Solutions</h2>
+    <h2 class="text-center fw-bold mb-5" style="color: var(--primary-color);">🌾 Nos Solutions</h2>
     <div class="row g-4">
+      
+      <!-- AgriBot -->
       <div class="col-md-4">
-        <div class="card border-0 shadow-sm h-100 text-start">
-          <div class="card-body">
-            <div class="d-flex align-items-center mb-3">
-              <i class="fas fa-robot fa-2x text-success me-3"></i>
-              <h5 class="card-title">AgriBot</h5>
-            </div>
-            <p class="card-text">Posez vos questions sur les plantes, maladies ou pratiques agricoles.</p>
-            <a href="{{ url_for('main.agribot') }}" class="btn btn-outline-success">Lancer AgriBot</a>
+        <div class="card solution-card text-center p-4 h-100">
+          <div class="mb-3">
+            <i class="fas fa-robot fa-2x text-success"></i>
           </div>
+          <h5 class="fw-bold mb-2">AgriBot</h5>
+          <p class="text-muted">Posez vos questions sur les plantes, maladies ou pratiques agricoles.</p>
+          <a href="{{ url_for('main.agribot') }}" class="btn btn-outline">Lancer AgriBot</a>
         </div>
       </div>
+
+      <!-- Météo -->
       <div class="col-md-4">
-        <div class="card border-0 shadow-sm h-100 text-start">
-          <div class="card-body">
-            <div class="d-flex align-items-center mb-3">
-              <i class="fas fa-cloud-sun fa-2x text-warning me-3"></i>
-              <h5 class="card-title">Prévisions Météo</h5>
-            </div>
-            <p class="card-text">Anticipez vos activités grâce à des données météo fiables.</p>
-            <a href="{{ url_for('main.weather') }}" class="btn btn-outline-success">Voir les prévisions</a>
+        <div class="card solution-card text-center p-4 h-100">
+          <div class="mb-3">
+            <i class="fas fa-cloud-sun fa-2x text-warning"></i>
           </div>
+          <h5 class="fw-bold mb-2">Prévisions Météo</h5>
+          <p class="text-muted">Anticipez vos activités grâce à des données météo fiables.</p>
+          <a href="{{ url_for('main.weather') }}" class="btn btn-outline">Voir les prévisions</a>
         </div>
       </div>
+
+      <!-- Sols -->
       <div class="col-md-4">
-        <div class="card border-0 shadow-sm h-100 text-start">
-          <div class="card-body">
-            <div class="d-flex align-items-center mb-3">
-              <i class="fas fa-seedling fa-2x text-success me-3"></i>
-              <h5 class="card-title">Typologie des Sols</h5>
-            </div>
-            <p class="card-text">Analysez les caractéristiques des sols de votre région avec précision.</p>
-            <a href="{{ url_for('main.soils') }}" class="btn btn-outline-success">Explorer</a>
+        <div class="card solution-card text-center p-4 h-100">
+          <div class="mb-3">
+            <i class="fas fa-seedling fa-2x text-success"></i>
           </div>
+          <h5 class="fw-bold mb-2">Typologie des Sols</h5>
+          <p class="text-muted">Analysez les caractéristiques des sols de votre région avec précision.</p>
+          <a href="{{ url_for('main.soils') }}" class="btn btn-outline">Explorer</a>
         </div>
       </div>
+
     </div>
   </div>
 </section>
+
 
 <!-- Pourquoi nous choisir -->
 <section class="py-5 bg-white">

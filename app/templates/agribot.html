@@ -10,7 +10,7 @@
     <div class="text-center mb-5">
       <img src="{{ url_for('static', filename='images/agribot-avatar.png') }}"
            alt="AgriBot Avatar" width="100" class="mb-3 rounded-circle shadow">
-      <h2 class="fw-bold text-success"><i class="fas fa-robot me-2"></i> AgriBot</h2>
+      <h2 class="fw-bold" style="color: var(--primary-color);"><i class="fas fa-robot me-2"></i> AgriBot</h2>
       <p class="lead mx-auto" style="max-width: 700px;">
         Je suis <strong>AgriBot</strong>, ton assistant intelligent pour l'agriculture durable 🌾<br>
         Pose-moi tes questions sur les cultures, le climat ou les sols — je te répondrai avec précision !
@@ -27,7 +27,9 @@
     <!-- Saisie -->
     <form id="chat-form" class="d-flex">
       <input type="text" id="user-input" name="question" class="form-control me-2" placeholder="Pose ta question ici…" required>
-      <button type="submit" class="btn" style="background-color: var(--primary-color); color: #fff;">Envoyer</button>
+      <button type="submit" class="btn" style="background-color: var(--primary-color); color: #fff;">
+        <i class="fas fa-paper-plane me-1"></i> Envoyer
+      </button>
     </form>
   </div>
 </section>
@@ -54,7 +56,7 @@
     messageDiv.innerHTML = `
       <div class="d-flex ${isUser ? 'flex-row-reverse' : ''} align-items-start" style="max-width: 80%;">
         <img src="${avatar}" class="rounded-circle me-2" alt="avatar" width="40" height="40">
-        <div class="${isUser ? 'bg-success text-white' : 'bg-light border'} p-3 rounded shadow-sm" style="max-width: 100%;">
+        <div class="p-3 rounded shadow-sm" style="max-width: 100%; background-color: ${isUser ? 'var(--primary-color)' : '#f8f9fa'}; color: ${isUser ? '#fff' : '#000'};">
           <small class="d-block fw-semibold mb-1">${isUser ? 'Vous' : 'AgriBot'}</small>
           <span>${message}</span>
         </div>
@@ -95,7 +97,7 @@
       }
     } catch (err) {
       chatContainer.removeChild(loader);
-      appendMessage("bot", "Une erreur est survenue. Réessaie plus tard.");
+      appendMessage("bot", "❌ Une erreur est survenue. Réessaie plus tard.");
     }
   });
 </script>
