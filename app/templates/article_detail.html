@@ -21,7 +21,7 @@
     <img src="{{ url_for('static', filename=article.image) }}" alt="{{ article.title }}" class="img-fluid mb-4 rounded">
   {% endif %}
   <div class="article-body mb-5">{{ article.content | safe }}</div>
-  <a href="{{ url_for('main.articles') }}" class="btn btn-secondary">← Retour aux articles</a>
+  <a href="{{ url_for('main.articles_list') }}" class="btn btn-secondary">← Retour aux articles</a>
   {% if related %}
     <hr><h3>À lire aussi</h3><div class="row">
       {% for art in related %}{{ m.card(art.title, art.image, art.summary, {'endpoint':'article_detail','args':{'id':art.id}}) }}{% endfor %}

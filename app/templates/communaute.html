@@ -1,23 +1,54 @@
 {% extends "base.html" %}
 
-{% block title %}Communauté - IA Agri{% endblock %}
+{% block title %}👥 Communauté - AgriHelper{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Rejoignez notre Communauté</h2>
-    <p class="text-center lead">Partagez vos expériences et posez vos questions.</p>
-    <div class="row mt-4">
-        {% for discussion in discussions %}
-        <div class="col-md-6">
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">{{ discussion.title }}</h5>
-                    <p class="card-text">Par {{ discussion.author }} le {{ discussion.date }}</p>
-                    <a href="#" class="btn btn-success">Voir la discussion</a>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
+<section class="py-5 bg-white">
+  <div class="container">
+    <h2 class="text-center fw-bold mb-4" style="color: var(--primary-color);">👥 Espace Communautaire</h2>
+    <p class="text-center lead mb-5" style="max-width: 600px; margin: auto;">
+      Partagez vos idées, posez vos questions ou inspirez d’autres agriculteurs et passionnés 🌱
+    </p>
+
+    <!-- Formulaire de nouveau post -->
+    <div class="card shadow-sm mb-5">
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('main.communaute') }}">
+          <div class="mb-3">
+            <label for="message" class="form-label">💬 Nouveau message</label>
+            <textarea class="form-control" id="message" name="message" rows="3" placeholder="Que voulez-vous partager ?" required></textarea>
+          </div>
+          <div class="text-end">
+            <button type="submit" class="btn btn-success"><i class="fas fa-paper-plane"></i> Publier</button>
+          </div>
+        </form>
+      </div>
     </div>
-</div>
+
+    <!-- Liste des messages -->
+    <div class="row g-4">
+      {% for post in posts %}
+      <div class="col-md-6">
+        <div class="card community-card shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <img src="https://api.dicebear.com/6.x/thumbs/svg?seed={{ post.user }}" alt="avatar"
+                   class="rounded-circle me-3" width="50" height="50">
+              <div>
+                <h6 class="mb-0 fw-bold">{{ post.user }}</h6>
+                <small class="text-muted">{{ post.created_at.strftime('%d %B %Y') }}</small>
+              </div>
+            </div>
+            <p class="card-text">{{ post.message }}</p>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="col-12">
+        <p class="text-center text-muted">Aucune discussion pour le moment. Soyez le premier à lancer une conversation !</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
 {% endblock %}

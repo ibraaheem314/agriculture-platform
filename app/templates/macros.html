@@ -25,3 +25,17 @@
   </ul>
 </nav>
 {% endmacro %}
+
+<!-- File: templates/macros.html -->
+{% macro card(title, image, summary, link) %}
+<div class="col-md-4 mb-4">
+  <div class="card h-100 shadow-sm border-0">
+    <img src="{{ url_for('static', filename=image) }}" class="card-img-top rounded-top" alt="{{ title }}">
+    <div class="card-body">
+      <h5 class="card-title">{{ title }}</h5>
+      <p class="card-text">{{ summary }}</p>
+      <a href="{{ url_for(link.endpoint, **link.args) }}" class="btn btn-outline-success">Lire l'article</a>
+    </div>
+  </div>
+</div>
+{% endmacro %}

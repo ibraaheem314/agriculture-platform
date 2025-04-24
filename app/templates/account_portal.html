@@ -56,5 +56,49 @@
       </form>
     </div>
   </div>
+
+  {% if session.get("user_id") %}
+  <hr class="my-5">
+  <!-- PROFIL UTILISATEUR -->
+  <section class="text-center">
+    <h3 class="mb-3"><i class="fas fa-id-badge me-2"></i> Mon profil</h3>
+    <p><strong>Nom :</strong> {{ session['username'] }}</p>
+    <p><strong>Email :</strong> {{ session['email'] }}</p>
+    <a href="{{ url_for('main.logout') }}" class="btn btn-outline-danger">Se déconnecter</a>
+  </section>
+  {% endif %}
+
+  <!-- DARK MODE -->
+  <hr class="my-5">
+  <div class="text-center">
+    <button id="toggleDark" class="btn btn-outline-secondary">🌙 Mode Sombre</button>
+  </div>
+  <script>
+    document.getElementById("toggleDark").addEventListener("click", function() {
+      document.body.classList.toggle("dark-mode");
+    });
+  </script>
+
+  <!-- BLOG INTERACTIF -->
+  <hr class="my-5">
+  <section class="py-4">
+    <div class="container">
+      <h3 class="text-center mb-4">📓 Articles récents</h3>
+      <div class="row g-4">
+        {% for article in articles %}
+        <div class="col-md-4">
+          <div class="card h-100 border-0 shadow-sm">
+            <img src="{{ url_for('static', filename='images/' ~ article.image) }}" class="card-img-top" alt="{{ article.title }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ article.title }}</h5>
+              <p class="card-text">{{ article.excerpt }}</p>
+              <a href="{{ url_for('main.article_detail', slug=article.slug) }}" class="btn btn-outline-success">Lire</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
 </div>
 {% endblock %}

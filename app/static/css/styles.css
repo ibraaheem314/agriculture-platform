@@ -1,180 +1,163 @@
-/* Variables globales – basées sur les couleurs du nouveau logo agrIA */
+/* 🌱 Palette moderne AgriHelper - cohérente et fun */
 :root {
-    --primary-color: #003524; /* Vert profond du logo */
-    --secondary-color: #FDC728; /* Jaune vif du logo */
-    --background-color: #F5F5F5; /* Gris très clair pour les fonds */
-    --text-color: #222; /* Noir doux pour la lisibilité */
-    --accent-color: #1976D2; /* Bleu pour certains liens ou accents */
-    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  --primary-color: #003524;
+  --secondary-color: #FDC728;
+  --accent-color: #00A86B;
+  --background-color: #F9FAF9;
+  --text-color: #1A1A1A;
+  --light-gray: #e9ecef;
+  --danger-color: #dc3545;
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
+/* 🌐 Reset de base */
 body {
-    font-family: 'Roboto', sans-serif;
-    color: var(--text-color);
-    background-color: var(--background-color);
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
+  font-family: 'Poppins', 'Roboto', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
 }
 
+/* 🚀 Navbar */
 .navbar-brand img {
-    height: 45px;
-    transition: transform 0.3s ease;
+  height: 45px;
+  transition: transform 0.3s ease;
 }
-
 .navbar-brand img:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
-
 .navbar-nav .nav-link {
-    font-weight: 500;
-    transition: all 0.3s ease;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
-
 .navbar-nav .nav-link:hover {
-    color: var(--primary-color);
-    transform: scale(1.05);
+  color: var(--primary-color);
+  transform: scale(1.05);
 }
 
+/* 🔘 Boutons */
 .btn-success {
-    background-color: var(--primary-color);
-    border: none;
-    color: #fff;
-    transition: background-color 0.3s ease;
+  background-color: var(--primary-color);
+  border: none;
+  color: #fff;
 }
-
 .btn-success:hover {
-    background-color: var(--secondary-color);
-    color: #000;
+  background-color: var(--secondary-color);
+  color: black;
 }
-
-.card {
-    border-radius: 12px;
-    box-shadow: var(--box-shadow);
-    transition: transform 0.3s ease;
-    overflow: hidden;
-}
-
-.card:hover {
-    transform: translateY(-8px);
-}
-
-.card-body i {
-    color: var(--primary-color);
-}
-
-.hero-section {
-    height: 100vh;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/static/images/farm.jpg') no-repeat center center;
-    background-size: cover;
-    color: #fff;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 60px 20px;
-}
-
-.hero-section h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-}
-
-.hero-section .btn {
-    background-color: var(--primary-color);
-    border: none;
-    color: white;
-    padding: 10px 30px;
-    font-size: 1.1rem;
-}
-
-.hero-section .btn:hover {
-    background-color: var(--secondary-color);
-    color: black;
-}
-
-footer {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 30px 0;
-    text-align: center;
-}
-
-footer .social-icons a {
-    color: white;
-    font-size: 1.5rem;
-    margin: 0 10px;
-    transition: color 0.3s ease;
-}
-
-footer .social-icons a:hover {
-    color: var(--secondary-color);
-}
-
-/* Mise en forme chatbot */
-#chat-box {
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 20px;
-    background-color: white;
-    max-height: 400px;
-    overflow-y: auto;
-    font-size: 1rem;
-    box-shadow: var(--box-shadow);
-}
-
-/* Dark mode simple */
-body.dark-mode {
-    background-color: #121212;
-    color: #f1f1f1;
-}
-
-body.dark-mode .card, body.dark-mode .navbar, body.dark-mode .footer {
-    background-color: #1e1e1e;
-    color: #fff;
-}
-
-body.dark-mode .btn-success {
-    background-color: var(--secondary-color);
-    color: black;
-}
-
 .btn-custom-outline {
-    border: 2px solid #00382c;
-    color: #00382c;
-    background-color: transparent;
-    transition: all 0.3s ease;
-  }
-  .btn-custom-outline:hover {
-    background-color: #FFC107;
-    color: #fff;
-    border-color: #FFC107;
-  }
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+.btn-custom-outline:hover {
+  background-color: var(--secondary-color);
+  color: white;
+  border-color: var(--secondary-color);
+}
 
-  .btn-custom-outline {
-    border: 2px solid #00382c;
-    color: #00382c;
-    background-color: transparent;
-    transition: all 0.3s ease;
-  }
-  .btn-custom-outline:hover {
-    background-color: #FFC107;
-    color: white;
-    border-color: #FFC107;
-  }
+/* 📦 Cartes */
+.card {
+  border-radius: 16px;
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-8px);
+}
 
-  .news-banner .scrolling-text {
-    white-space: nowrap;
-    animation: scroll-text 15s linear infinite;
-    display: inline-block;
-  }
-  
-  @keyframes scroll-text {
-    0% {
-      transform: translateX(100%);
-    }
-    100% {
-      transform: translateX(-100%);
-    }
-  }
-  
+/* 💎 Solution card glass effect */
+.solution-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(0,0,0,0.05);
+}
+.solution-card:hover {
+  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+}
+
+/* ✨ Hero modern */
+.hero-modern {
+  background: linear-gradient(to bottom right, #EAF9F0, #f4fcf4);
+  padding: 120px 0;
+  text-align: center;
+  position: relative;
+}
+.hero-modern::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('/static/images/bg-illustration.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.07;
+  z-index: 0;
+}
+.hero-modern h1, .hero-modern p, .hero-modern .btn {
+  position: relative;
+  z-index: 1;
+}
+
+/* 📢 Animations */
+.fade-in {
+  animation: fadeIn 1s ease forwards;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 🌓 Dark Mode */
+body.dark-mode {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+body.dark-mode .card,
+body.dark-mode .navbar,
+body.dark-mode .footer,
+body.dark-mode input,
+body.dark-mode textarea {
+  background-color: #1e1e1e;
+  color: #fff;
+}
+body.dark-mode .btn-success {
+  background-color: var(--secondary-color);
+  color: black;
+}
+
+/* 🦾 Chatbot zone */
+#chat-box {
+  border-radius: 10px;
+  background-color: white;
+  padding: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+  box-shadow: var(--box-shadow);
+}
+
+.community-card {
+  border-left: 4px solid var(--primary-color);
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.community-card:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+  transform: translateY(-5px);
+}
+
+.btn-primary-custom {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary-custom:hover {
+  background-color: var(--secondary-color);
+  color: #000;
+}

@@ -1,34 +1,36 @@
+<!-- File: templates/agribot.html -->
 {% extends "base.html" %}
 
 {% block title %}🤖 AgriBot – Votre assistant agricole{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-  <div class="text-center mb-4">
-    <h2 class="text-success"><i class="fas fa-robot"></i> AgriBot – Votre assistant agricole</h2>
-    <p class="lead mt-3" style="max-width: 700px; margin: auto;">
-      Bonjour et bienvenue !<br>
-      Je suis <strong>AgriBot</strong>, ton assistant agricole intelligent 🤖🌾<br>
-      Pose-moi tes questions sur l’agriculture, la météo, les sols ou la vie rurale,<br>
-      et je te répondrai avec clarté !
-    </p>
-    <img src="{{ url_for('static', filename='images/agribot-avatar.png') }}" alt="AgriBot Avatar"
-         width="100" class="mb-3 rounded-circle shadow">
-  </div>
-
-  <!-- Zone de discussion -->
-  <div class="card mb-4" style="min-height: 300px;">
-    <div class="card-body" id="chat-container" style="max-height: 400px; overflow-y: auto;">
-      <!-- Messages dynamiques ici -->
+<section class="py-5">
+  <div class="container">
+    <!-- Intro -->
+    <div class="text-center mb-5">
+      <img src="{{ url_for('static', filename='images/agribot-avatar.png') }}"
+           alt="AgriBot Avatar" width="100" class="mb-3 rounded-circle shadow">
+      <h2 class="fw-bold text-success"><i class="fas fa-robot me-2"></i> AgriBot</h2>
+      <p class="lead mx-auto" style="max-width: 700px;">
+        Je suis <strong>AgriBot</strong>, ton assistant intelligent pour l'agriculture durable 🌾<br>
+        Pose-moi tes questions sur les cultures, le climat ou les sols — je te répondrai avec précision !
+      </p>
     </div>
-  </div>
 
-  <!-- Formulaire de saisie -->
-  <form id="chat-form" class="d-flex">
-    <input type="text" id="user-input" name="question" class="form-control me-2" placeholder="Pose ta question ici…" required>
-    <button type="submit" class="btn btn-success">Envoyer</button>
-  </form>
-</div>
+    <!-- Chat UI -->
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-body" id="chat-container" style="max-height: 400px; overflow-y: auto;">
+        <!-- Messages ici -->
+      </div>
+    </div>
+
+    <!-- Saisie -->
+    <form id="chat-form" class="d-flex">
+      <input type="text" id="user-input" name="question" class="form-control me-2" placeholder="Pose ta question ici…" required>
+      <button type="submit" class="btn" style="background-color: var(--primary-color); color: #fff;">Envoyer</button>
+    </form>
+  </div>
+</section>
 {% endblock %}
 
 {% block scripts %}
@@ -37,32 +39,32 @@
   const chatForm = document.getElementById('chat-form');
   const input = document.getElementById('user-input');
 
-  function scrollToBottom() {
+  const scrollToBottom = () => {
     chatContainer.scrollTop = chatContainer.scrollHeight;
-  }
+  };
 
-  function appendMessage(role, message) {
+  const appendMessage = (role, message) => {
     const isUser = role === 'user';
     const avatar = isUser
       ? 'https://cdn-icons-png.flaticon.com/512/1946/1946429.png'
       : 'https://cdn-icons-png.flaticon.com/512/4712/4712109.png';
 
-    const div = document.createElement('div');
-    div.className = `d-flex mb-3 ${isUser ? 'justify-content-end' : 'justify-content-start'}`;
-    div.innerHTML = `
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `d-flex mb-3 ${isUser ? 'justify-content-end' : 'justify-content-start'}`;
+    messageDiv.innerHTML = `
       <div class="d-flex ${isUser ? 'flex-row-reverse' : ''} align-items-start" style="max-width: 80%;">
         <img src="${avatar}" class="rounded-circle me-2" alt="avatar" width="40" height="40">
-        <div class="${isUser ? 'bg-success text-white' : 'bg-light border'} p-2 rounded" style="max-width: 100%;">
-          <small class="d-block fw-bold">${isUser ? 'Vous' : 'AgriBot'}</small>
+        <div class="${isUser ? 'bg-success text-white' : 'bg-light border'} p-3 rounded shadow-sm" style="max-width: 100%;">
+          <small class="d-block fw-semibold mb-1">${isUser ? 'Vous' : 'AgriBot'}</small>
           <span>${message}</span>
         </div>
       </div>
     `;
-    chatContainer.appendChild(div);
+    chatContainer.appendChild(messageDiv);
     scrollToBottom();
-  }
+  };
 
-  chatForm.addEventListener("submit", async function (e) {
+  chatForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     const question = input.value.trim();
     if (!question) return;
@@ -70,7 +72,6 @@
     appendMessage("user", question);
     input.value = "";
 
-    // Affiche un loader
     const loader = document.createElement("div");
     loader.className = "text-muted fst-italic ms-2";
     loader.textContent = "AgriBot réfléchit...";
@@ -78,12 +79,13 @@
     scrollToBottom();
 
     try {
-      const res = await fetch("{{ url_for('main.agribot') }}", {
+      const response = await fetch("{{ url_for('main.agribot') }}", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question })
       });
-      const data = await res.json();
+
+      const data = await response.json();
       chatContainer.removeChild(loader);
 
       if (data.error) {
@@ -93,7 +95,7 @@
       }
     } catch (err) {
       chatContainer.removeChild(loader);
-      appendMessage("bot", "❌ Erreur de connexion. Réessaie.");
+      appendMessage("bot", "Une erreur est survenue. Réessaie plus tard.");
     }
   });
 </script>

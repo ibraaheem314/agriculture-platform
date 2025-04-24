@@ -1,31 +1,51 @@
 <!-- File: templates/partials/footer.html -->
-<footer class="bg-dark text-white pt-5 pb-3 mt-5">
-  <div class="container">
-    <div class="row mb-4">
-      <div class="col-md-6">
-        <h5 class="fw-bold">AgriHelper</h5>
-        <p>Votre partenaire pour une agriculture intelligente, durable et innovante.</p>
+<footer class="bg-dark text-white pt-5 pb-4">
+  <div class="container text-md-start">
+    <div class="row text-center text-md-start">
+      
+      <!-- Logo & Description -->
+      <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
+        <h6 class="text-uppercase fw-bold">
+          <img src="{{ url_for('static', filename='images/logo-agria.png') }}" alt="agrIA" width="80" class="me-2">
+        </h6>
+        <p>
+          🌾 Plateforme intelligente pour l’agriculture durable. Prédictions météo, analyse de sol, assistant IA.
+        </p>
       </div>
-      <div class="col-md-3">
-        <h6>Navigation</h6>
-        <ul class="list-unstyled">
-          <li><a href="{{ url_for('main.home') }}" class="text-white text-decoration-none">Accueil</a></li>
-          <li><a href="{{ url_for('main.about') }}" class="text-white text-decoration-none">À propos</a></li>
-          <li><a href="{{ url_for('main.articles') }}" class="text-white text-decoration-none">Articles</a></li>
-          <li><a href="{{ url_for('main.communaute') }}" class="text-white text-decoration-none">Communauté</a></li>
-        </ul>
+
+      <!-- Liens Utiles -->
+      <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+        <h6 class="text-uppercase fw-bold">Navigation</h6>
+        <p><a href="{{ url_for('main.home') }}" class="text-reset">Accueil</a></p>
+        <p><a href="{{ url_for('main.agribot') }}" class="text-reset">AgriBot</a></p>
+        <p><a href="{{ url_for('main.weather') }}" class="text-reset">Météo</a></p>
+        <p><a href="{{ url_for('main.soils') }}" class="text-reset">Sols</a></p>
       </div>
-      <div class="col-md-3">
-        <h6>Suivez-nous</h6>
-        <div class="d-flex gap-3">
+
+      <!-- Communauté -->
+      <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+        <h6 class="text-uppercase fw-bold">Communauté</h6>
+        <p><a href="{{ url_for('main.communaute') }}" class="text-reset">Forum</a></p>
+        <p><a href="{{ url_for('main.articles_list') }}" class="text-reset">Articles</a></p>
+        <p><a href="{{ url_for('main.contact_form') }}" class="text-reset">Contact</a></p>
+      </div>
+
+      <!-- Réseaux Sociaux -->
+      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0">
+        <h6 class="text-uppercase fw-bold">Suivez-nous</h6>
+        <div class="d-flex gap-3 mt-2">
           <a href="#" class="text-white"><i class="fab fa-facebook fa-lg"></i></a>
           <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
           <a href="#" class="text-white"><i class="fab fa-linkedin fa-lg"></i></a>
-          <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
+          <a href="#" class="text-white"><i class="fab fa-youtube fa-lg"></i></a>
         </div>
       </div>
+
     </div>
-    <hr class="border-secondary">
-    <p class="text-center mb-0">&copy; 2025 AgriHelper – Tous droits réservés.</p>
+  </div>
+
+  <!-- Bottom -->
+  <div class="text-center py-3 border-top mt-4" style="border-color: rgba(255,255,255,0.1) !important;">
+    © 2025 agrIA - Tous droits réservés.
   </div>
 </footer>

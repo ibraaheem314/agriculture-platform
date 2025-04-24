@@ -1,132 +1,264 @@
+<!-- Nouveau index.html modernisé inspiré de amini.ai -->
 {% extends "base.html" %}
 
 {% block title %}Accueil - AgriHelper{% endblock %}
 
 {% block content %}
-<!-- Bandeau Infos/Mises à Jour -->
-<div class="py-2" style="background-color: #00382c; color: white;">
-    <div class="container d-flex justify-content-between align-items-center">
-        <marquee behavior="scroll" direction="left">
-            🌱 Mise à jour : Nouvelle fonctionnalité AgriBot | ☀️ Météo précise disponible | 📊 Typologie des sols améliorée !
-        </marquee>
-        <a href="{{ url_for('main.articles') }}" class="text-white text-decoration-none">Lire plus <i class="fas fa-arrow-right"></i></a>
-    </div>
-</div>
 
-<!-- Section Héro Visuelle -->
-<section class="py-5 text-center text-white" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/static/images/farm.jpg') no-repeat center center/cover;">
-    <div class="container">
-        <h1 class="display-4 fw-bold">L’IA au service de l’agriculture durable</h1>
-        <p class="lead mb-4">Optimisez vos cultures grâce à l'intelligence artificielle et aux données en temps réel.</p>
-        <a href="#nos-solutions" class="btn btn-lg" style="background-color: #FFC107; color: #fff; border: none;">
-            Explorer nos solutions
-        </a>        
-    </div>
+<!-- HERO MODERN -->
+<section class="hero-modern d-flex align-items-center justify-content-center text-center text-white">
+  <div class="container">
+    <h1 class="display-3 fw-bold animate__animated animate__fadeInDown">L’IA au service de l’agriculture durable</h1>
+    <p class="lead animate__animated animate__fadeInUp animate__delay-1s">
+      Des outils précis. Des cultures optimisées. Une nature respectée.
+    </p>
+    <a href="#nos-solutions" class="btn btn-warning btn-lg mt-4 animate__animated animate__fadeInUp animate__delay-2s">
+      Explorer les solutions
+    </a>
+  </div>
 </section>
 
-<!-- Nos Solutions -->
+<!-- SOLUTIONS AGRIHELPER -->
 <section id="nos-solutions" class="py-5 bg-light">
-    <div class="container">
-      <h2 class="text-center mb-5" style="color: #00382c;">Nos Solutions</h2>
-      <div class="row g-4">
-        <!-- AgriBot -->
-        <div class="col-md-4">
-          <div class="card h-100 shadow-sm">
-            <div class="card-body text-center">
-              <i class="fas fa-robot fa-3x mb-3" style="color: #00382c;"></i>
+  <div class="container">
+    <h2 class="text-center mb-5" style="color: #00382c;">Nos Solutions</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100 text-start">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <i class="fas fa-robot fa-2x text-success me-3"></i>
               <h5 class="card-title">AgriBot</h5>
-              <p class="card-text">Posez vos questions sur les plantes, maladies ou pratiques agricoles.</p>
-              <a href="{{ url_for('main.agribot') }}" class="btn btn-custom-outline">Lancer AgriBot</a>
             </div>
+            <p class="card-text">Posez vos questions sur les plantes, maladies ou pratiques agricoles.</p>
+            <a href="{{ url_for('main.agribot') }}" class="btn btn-outline-success">Lancer AgriBot</a>
           </div>
         </div>
-  
-        <!-- Météo -->
-        <div class="col-md-4">
-          <div class="card h-100 shadow-sm">
-            <div class="card-body text-center">
-              <i class="fas fa-cloud-sun fa-3x mb-3" style="color: #FFC107;"></i>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100 text-start">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <i class="fas fa-cloud-sun fa-2x text-warning me-3"></i>
               <h5 class="card-title">Prévisions Météo</h5>
-              <p class="card-text">Anticipez vos activités grâce à des données météo fiables.</p>
-              <a href="{{ url_for('main.weather') }}" class="btn btn-custom-outline">Voir les prévisions</a>
             </div>
+            <p class="card-text">Anticipez vos activités grâce à des données météo fiables.</p>
+            <a href="{{ url_for('main.weather') }}" class="btn btn-outline-success">Voir les prévisions</a>
           </div>
         </div>
-  
-        <!-- Typologie des Sols -->
-        <div class="col-md-4">
-          <div class="card h-100 shadow-sm">
-            <div class="card-body text-center">
-              <i class="fas fa-seedling fa-3x mb-3" style="color: #00382c;"></i>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100 text-start">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <i class="fas fa-seedling fa-2x text-success me-3"></i>
               <h5 class="card-title">Typologie des Sols</h5>
-              <p class="card-text">Identifiez les propriétés des sols de votre région.</p>
-              <a href="{{ url_for('main.soils') }}" class="btn btn-custom-outline">Explorer</a>
             </div>
+            <p class="card-text">Analysez les caractéristiques des sols de votre région avec précision.</p>
+            <a href="{{ url_for('main.soils') }}" class="btn btn-outline-success">Explorer</a>
           </div>
         </div>
       </div>
     </div>
-  </section>
-  
-  <!-- Pourquoi nous choisir -->
-  <section class="py-5">
+  </div>
+</section>
+
+<!-- Pourquoi nous choisir -->
+<section class="py-5 bg-white">
     <div class="container">
-      <h2 class="text-center mb-5" style="color: #00382c;">Pourquoi nous choisir ?</h2>
+      <h2 class="text-center mb-5 fw-bold" style="color: #00382c;">Pourquoi nous choisir ?</h2>
       <div class="row align-items-center">
         <div class="col-md-6">
           <p class="fs-5">
-            AgriHelper combine l’IA, la météo prédictive, et la science des sols pour proposer une agriculture plus intelligente et plus résiliente.
+            🌾 AgriHelper combine <strong>intelligence artificielle</strong>, <strong>climatologie avancée</strong> et <strong>sciences des sols</strong> pour vous offrir une agriculture plus prédictive, plus rentable, et plus durable.
           </p>
+          <a href="{{ url_for('main.about') }}" class="btn btn-outline-success mt-3">En savoir plus</a>
         </div>
-        <div class="col-md-6">
-          <blockquote class="blockquote border-start ps-3" style="border-color: #00382c;">
-            <p class="mb-0">"AgriHelper m’a permis de doubler mes rendements !"</p>
-            <footer class="blockquote-footer">Un agriculteur satisfait</footer>
-          </blockquote>
+        <div class="col-md-6 text-center">
+          <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <blockquote class="blockquote border-start ps-3" style="border-left: 4px solid #28a745;">
+                  <p class="mb-2">"AgriHelper m’a permis de doubler mes rendements en une saison !"</p>
+                  <footer class="blockquote-footer">Un agriculteur satisfait</footer>
+                </blockquote>
+              </div>
+              <div class="carousel-item">
+                <blockquote class="blockquote border-start ps-3" style="border-left: 4px solid #28a745;">
+                  <p class="mb-2">"Grâce à AgriBot, je détecte plus vite les maladies de mes cultures."</p>
+                  <footer class="blockquote-footer">Utilisateur AgriBot</footer>
+                </blockquote>
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon"></span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </section>
-
-
-<!-- Mises à Jour -->
-<section class="updates-section py-5 bg-light">
+  
+  <!-- Stats - Impact -->
+  <section class="py-5 text-white" style="background-color: #00382c;">
+    <div class="container text-center">
+      <h2 class="mb-5 fw-bold">🌍 Notre impact en chiffres</h2>
+      <div class="row g-4">
+        <div class="col-md-3">
+          <h3 class="display-5 fw-bold counter" data-target="10000">
+            <i class="fas fa-users"></i> <span>0</span>+
+          </h3>
+          <p>Utilisateurs actifs</p>
+        </div>
+        <div class="col-md-3">
+          <h3 class="display-5 fw-bold counter" data-target="500000">
+            <i class="fas fa-seedling"></i> <span>0</span>+
+          </h3>
+          <p>Hectares monitorés</p>
+        </div>
+        <div class="col-md-3">
+          <h3 class="display-5 fw-bold counter" data-target="120000">
+            <i class="fas fa-robot"></i> <span>0</span>+
+          </h3>
+          <p>Interactions AgriBot</p>
+        </div>
+        <div class="col-md-3">
+          <h3 class="display-5 fw-bold counter" data-target="95">
+            <i class="fas fa-cloud-sun"></i> <span>0</span>%
+          </h3>
+          <p>Précision météo</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const counters = document.querySelectorAll(".counter");
+      counters.forEach(counter => {
+        const span = counter.querySelector("span");
+        const update = () => {
+          const target = +counter.dataset.target;
+          const count = +span.innerText;
+          const increment = target / 200;
+          if (count < target) {
+            span.innerText = Math.ceil(count + increment);
+            setTimeout(update, 15);
+          } else {
+            span.innerText = target.toLocaleString();
+          }
+        };
+        update();
+      });
+    });
+  </script>
+ 
+<!-- Témoignages / Carrousel amélioré avec SwiperJS -->
+<section class="py-5 bg-light">
     <div class="container">
-      <h2 class="text-center mb-5" style="color: #00382c;">Infos et Mises à Jour</h2>
+      <h2 class="text-center mb-5 fw-bold" style="color: #00382c;">📸 Ils nous font confiance</h2>
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+  
+          <div class="swiper-slide text-center">
+            <img src="{{ url_for('static', filename='images/farm1.jpg') }}" class="img-fluid rounded mb-3" alt="...">
+            <div class="bg-dark bg-opacity-50 rounded p-3 d-inline-block text-white">
+              <h5>Agriculteur de Kolda</h5>
+              <p>Grâce à AgriHelper, j'ai pu mieux anticiper les pluies et gérer mes plantations !</p>
+            </div>
+          </div>
+  
+          <div class="swiper-slide text-center">
+            <img src="{{ url_for('static', filename='images/farm2.jpg') }}" class="img-fluid rounded mb-3" alt="...">
+            <div class="bg-dark bg-opacity-50 rounded p-3 d-inline-block text-white">
+              <h5>Ferme de Sédhiou</h5>
+              <p>La typologie des sols m'a permis d'améliorer mes rendements de 35% !</p>
+            </div>
+          </div>
+  
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Mises à Jour -->
+  <section class="py-5" style="background-color: #f4fdf6;">
+    <div class="container">
+      <h2 class="text-center fw-bold mb-5" style="color: #00382c;">📢 Dernières actualités</h2>
       <div class="row g-4">
         {% for i in range(1,4) %}
         <div class="col-md-4">
-          <div class="card h-100 shadow-sm">
-            <img src="{{ url_for('static', filename='images/article' ~ i ~ '.jpg') }}" class="card-img-top" alt="Article {{ i }}">
+          <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+            <img src="{{ url_for('static', filename='images/article' ~ i ~ '.jpg') }}" class="card-img-top rounded-top" alt="Article {{ i }}">
             <div class="card-body">
-              <h5 class="card-title">Titre de l'article {{ i }}</h5>
-              <p class="card-text">Un bref résumé de l'article {{ i }}. Cliquez pour en savoir plus.</p>
-              <a href="{{ url_for('main.articles') }}" class="btn btn-custom-outline">Lire plus</a>
+              <h5 class="card-title fw-bold">Titre de l'article {{ i }} <span class="badge bg-success ms-2">Nouveau</span></h5>
+              <p class="card-text text-truncate" style="max-height: 60px; overflow: hidden;">Découvrez ce que nous avons récemment développé pour vous accompagner au quotidien.</p>
+              <a href="{{ url_for('main.articles_list') }}" class="btn btn-outline-success">Lire plus</a>
             </div>
           </div>
         </div>
         {% endfor %}
       </div>
       <div class="text-center mt-4">
-        <a href="{{ url_for('main.articles') }}" class="btn btn-warning text-white px-4">Voir toutes les actualités</a>
+        <a href="{{ url_for('main.articles_list') }}" class="btn btn-success px-4">Voir toutes les actualités</a>
       </div>
     </div>
   </section>
   
-  <!-- Communauté -->
-  <section class="py-5 bg-white">
-    <div class="container text-center">
-      <h2 class="mb-4" style="color: #00382c;">Rejoignez notre communauté</h2>
-      <p class="lead">Posez vos questions, échangez des conseils et collaborez avec d'autres agriculteurs et experts.</p>
-      <a href="{{ url_for('main.communaute') }}" class="btn btn-custom-outline">Accéder au forum</a>
+<!-- Découverte intelligente -->
+<section class="py-5" style="background-color: #00382c;">
+    <div class="container text-white">
+      <h2 class="text-center fw-bold mb-5">🧠 Décisions intelligentes avec AgriHelper</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card bg-dark text-white border-0 shadow h-100 animate__animated animate__fadeInUp">
+            <div class="card-body">
+              <h5 class="card-title"><i class="fas fa-tint me-2 text-info"></i>Arrosage optimal</h5>
+              <p class="card-text">Prévision : pluie légère demain à 6h. Arrosez maintenant pour économiser l’eau !</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card bg-dark text-white border-0 shadow h-100 animate__animated animate__fadeInUp animate__delay-1s">
+            <div class="card-body">
+              <h5 class="card-title"><i class="fas fa-leaf me-2 text-warning"></i>Conseil nutritif</h5>
+              <p class="card-text">Le sol de la parcelle 3 est pauvre en potassium. Ajoutez 5kg de K₂SO₄/hectare.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card bg-dark text-white border-0 shadow h-100 animate__animated animate__fadeInUp animate__delay-2s">
+            <div class="card-body">
+              <h5 class="card-title"><i class="fas fa-bug me-2 text-danger"></i>Risque phytosanitaire</h5>
+              <p class="card-text">Anomalie détectée sur la culture de maïs : possible attaque fongique. Inspectez !</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
   
-  <!-- Contact -->
+
+  <!-- Communauté -->
+  <section class="py-5 text-center bg-white">
+    <div class="container">
+      <h2 class="mb-3 fw-bold" style="color: #00382c;">👥 Rejoignez la communauté AgriHelper</h2>
+      <p class="lead mb-4">Échangez avec des agriculteurs passionnés et des experts du terrain.</p>
+      <a href="{{ url_for('main.communaute') }}" class="btn btn-outline-success btn-lg">Accéder au forum</a>
+    </div>
+  </section>
+  
+  <!-- Contact avec confirmation -->
   <section class="bg-light py-5">
     <div class="container">
-      <h2 class="text-center mb-5" style="color: #00382c;">Nous contacter</h2>
-      <form method="POST" action="{{ url_for('main.contact_form') }}" class="row g-3 justify-content-center">
+      <h2 class="text-center fw-bold mb-5" style="color: #00382c;">Nous contacter</h2>
+      <form method="POST" action="{{ url_for('main.contact_form') }}" class="row g-3 justify-content-center" onsubmit="showConfirmation(event)">
         <div class="col-md-6">
           <label for="name" class="form-label">Nom complet</label>
           <input type="text" class="form-control" id="name" name="name" required>
@@ -139,11 +271,31 @@
           <label for="message" class="form-label">Message</label>
           <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
         </div>
-        <div class="col-12 text-center">
-          <button type="submit" class="btn btn-custom-outline px-5">Envoyer</button>
+        <div class="col-12 text-center mt-3">
+          <button type="submit" class="btn btn-success px-5"><i class="fas fa-paper-plane me-2"></i>Envoyer</button>
         </div>
       </form>
+      <div id="confirmationMessage" class="alert alert-success mt-4 d-none text-center" role="alert">
+        ✅ Merci ! Votre message a bien été envoyé.
+      </div>
     </div>
-  </section>  
+  </section>
+  
+  {% block scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script>
+    const swiper = new Swiper(".mySwiper", {
+      loop: true,
+      pagination: { el: ".swiper-pagination", clickable: true },
+      navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+    });
+  
+    function showConfirmation(event) {
+      event.preventDefault();
+      document.getElementById('confirmationMessage').classList.remove('d-none');
+      setTimeout(() => document.querySelector('form').submit(), 1500);
+    }
+  </script>
+  {% endblock %}
 
-{% endblock %}
+  {% endblock %}

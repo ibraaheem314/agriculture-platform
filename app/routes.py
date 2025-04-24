@@ -1,11 +1,13 @@
 # File: app/routes.py
 import os
-from flask import Blueprint, render_template, request, jsonify, redirect, url_for, session, flash, current_app
+from flask import Blueprint, abort, render_template, request, jsonify, redirect, url_for, session, flash, current_app
 from flask_mail import Message
 from dotenv import load_dotenv
 import requests
 import sqlite3
 import base64
+from datetime import datetime
+
 
 # Charger les variables d'environnement
 load_dotenv()
@@ -35,6 +37,29 @@ def get_db_connection():
 # ========================
 # 📌 Routes principales
 # ========================
+articles = [
+    {
+        "id": 1,
+        "title": "Optimiser l'irrigation avec l'IA",
+        "image": "images/irrigation.jpg",
+        "summary": "Découvrez comment les algorithmes peuvent prédire les besoins en eau...",
+        "content": "<p>Contenu complet de l'article 1 ici...</p>",
+        "slug": "optimiser-irrigation-ia",
+        "author": "AgriBot",
+        "published_at": datetime(2024, 6, 12)
+    },
+    {
+        "id": 2,
+        "title": "Typologie des sols : les nouvelles tendances",
+        "image": "images/sols.jpg",
+        "summary": "Une nouvelle façon d'explorer les sols agricoles...",
+        "content": "<p>Contenu complet de l'article 2 ici...</p>",
+        "slug": "typologie-sols-tendances",
+        "author": "AgriBot",
+        "published_at": datetime(2024, 7, 2)
+    },
+    # Ajoute plus d'articles ici si besoin
+]
 
 @main.route("/", methods=["GET", "POST"])
 def home():
@@ -46,31 +71,37 @@ def about():
     return render_template("about.html")
 
 
-@main.route("/articles")
-def articles():
-    articles = [
-        {'id': 1, 'title': 'Agriculture durable', 'image': 'images/article1.jpg', 'summary': 'Résumé A'},
-        {'id': 2, 'title': 'Gestion de la sécheresse', 'image': 'images/article2.jpg', 'summary': 'Résumé B'}
-    ]
-    return render_template("articles.html", articles=articles, page=1, total_pages=1)
+@main.route('/articles')
+def articles_list():
+    return render_template('blog.html', articles=articles)
 
-
-@main.route("/article/<int:id>")
+@main.route('/article/<int:id>')
 def article_detail(id):
-    article = {
-        'id': id,
-        'title': f'Article {id}',
-        'content': 'Contenu complet de l\'article...',
-        'published_at': '2025-04-23',
-        'author': 'Auteur'
-    }
-    return render_template("article_detail.html", article=article, related=[])
+    article = next((a for a in articles if a["id"] == id), None)
+    if not article:
+        abort(404)
+    related = [a for a in articles if a["id"] != id][:3]
+    breadcrumb = [
+        ("Accueil", "main.home", {}),
+        ("Articles", "main.articles_list", {}),
+        (article["title"], "main.article_detail", {"id": article["id"]})
+    ]
+    return render_template('article_detail.html', article=article, related=related, breadcrumb=breadcrumb)
 
 
-@main.route("/communaute")
+@main.route('/communaute', methods=['GET', 'POST'])
 def communaute():
-    discussions = [{'title': 'Rendement du maïs ?', 'author': 'Jean', 'date': '2025-04-22'}]
-    return render_template("communaute.html", discussions=discussions)
+    if request.method == 'POST':
+        message = request.form.get('message')
+        if message:
+            post = {
+                "user": session.get("username", "Anonyme"),
+                "message": message,
+                "created_at": datetime.utcnow()
+            }
+            session.setdefault("posts", []).insert(0, post)  # insère en haut
+    posts = session.get("posts", [])
+    return render_template("communaute.html", posts=posts)
 
 
 # ========================
@@ -148,7 +179,7 @@ def agribot():
         }
 
         payload = {
-            "model": "mistralai/mistral-7b-instruct",  # modèle valide et léger
+            "model": "mistralai/mistral-7b-instruct",
             "messages": messages
         }
 
@@ -160,7 +191,7 @@ def agribot():
             if "choices" in result and result["choices"]:
                 reply = result["choices"][0]["message"]["content"]
                 messages.append({"role": "assistant", "content": reply})
-                session["agribot_memory"] = messages  # mettre à jour la session
+                session["agribot_memory"] = messages
                 return jsonify({"response": reply})
             else:
                 return jsonify({"error": "Réponse vide du modèle."}), 500
@@ -171,7 +202,6 @@ def agribot():
             return jsonify({"error": f"Erreur interne : {str(e)}"}), 500
 
     return render_template("agribot.html")
-
 
 
 @main.route("/weather", methods=["GET", "POST"])
@@ -256,6 +286,9 @@ def predict_image():
 def account_portal():
     return render_template("account_portal.html")
 
+@main.route('/blog')
+def blog():
+    return render_template('blog.html', articles=articles)
 
 @main.route('/coachs')
 def coachs():

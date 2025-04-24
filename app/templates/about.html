@@ -1,23 +1,85 @@
-<!-- File: templates/about.html -->
 {% extends "base.html" %}
 
-{% block title %}À propos de nous – AgriHelper{% endblock %}
+{% block title %}À propos - AgriHelper{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-  <h2 class="text-center mb-4">À propos de nous</h2>
-  <div class="row">
-    <div class="col-md-6">
-      <img src="{{ url_for('static', filename='images/team.jpg') }}" alt="Notre équipe" class="img-fluid rounded">
-    </div>
-    <div class="col-md-6">
-      <h3>Qui sommes-nous ?</h3>
-      <p>AgriHelper est une plateforme innovante conçue pour aider les agriculteurs à optimiser leurs récoltes grâce à des outils intelligents. Notre mission est de fournir des données précises et des prévisions fiables pour améliorer la productivité agricole.</p>
-      <h3>Notre vision</h3>
-      <p>Nous croyons en un avenir où chaque agriculteur a accès aux technologies modernes pour maximiser ses rendements tout en préservant l'environnement.</p>
-      <h3>Notre équipe</h3>
-      <p>Notre équipe est composée d'experts en agronomie, en développement logiciel et en intelligence artificielle. Ensemble, nous travaillons pour créer des solutions adaptées aux besoins des agriculteurs.</p>
+
+<!-- HERO -->
+<section class="py-5 text-white" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/static/images/farm.jpg') no-repeat center center/cover;">
+  <div class="container text-center">
+    <h1 class="display-4 fw-bold">À propos d’AgriHelper</h1>
+    <p class="lead">Une initiative technologique pour un avenir agricole durable.</p>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6 mb-4 mb-md-0">
+        <img src="{{ url_for('static', filename='images/about-mission.jpg') }}" class="img-fluid rounded shadow" alt="Notre mission">
+      </div>
+      <div class="col-md-6">
+        <h2 class="fw-bold" style="color: #00382c;">Notre mission 🌱</h2>
+        <p class="fs-5">AgriHelper a été créé avec une ambition claire : mettre la puissance de l’intelligence artificielle au service de l’agriculture en Afrique. Nous aidons les producteurs à mieux comprendre leurs sols, anticiper le climat, et prendre des décisions éclairées.</p>
+        <ul class="list-unstyled">
+          <li><i class="fas fa-check-circle text-success me-2"></i> Outils d’IA accessibles et fiables</li>
+          <li><i class="fas fa-check-circle text-success me-2"></i> Engagement écologique</li>
+          <li><i class="fas fa-check-circle text-success me-2"></i> Communauté agricole active</li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
+</section>
+
+<!-- VALEURS -->
+<section class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-4" style="color: #00382c;">Nos valeurs fondamentales</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-leaf text-success me-2"></i>Durabilité</h5>
+            <p class="card-text">Des solutions qui respectent la nature tout en augmentant la productivité.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-users text-success me-2"></i>Collaboration</h5>
+            <p class="card-text">Une plateforme faite avec et pour les agriculteurs et technophiles locaux.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-brain text-success me-2"></i>Innovation</h5>
+            <p class="card-text">Des technologies de pointe accessibles aux fermes de toutes tailles.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ÉQUIPE -->
+<section class="py-5">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-4" style="color: #00382c;">L’équipe derrière AgriHelper</h2>
+    <p class="mb-5 lead">Des développeurs, des ingénieurs agronomes, et des passionnés de changement au service des producteurs.</p>
+    <div class="row justify-content-center">
+      <!-- Exemple de membre -->
+      <div class="col-md-3">
+        <img src="{{ url_for('static', filename='images/avatar.jpg') }}" class="img-fluid rounded-circle mb-3" width="120" alt="Nom">
+        <h6 class="fw-bold">Nom Prénom</h6>
+        <p class="text-muted">Fondateur & Dev IA</p>
+      </div>
+      <!-- Tu peux dupliquer ce bloc pour plusieurs membres -->
+    </div>
+  </div>
+</section>
+
 {% endblock %}
