@@ -129,9 +129,14 @@ def register():
 @main.route("/contact", methods=["GET", "POST"])
 def contact_form():
     if request.method == "POST":
-        flash("Message envoyé !", "success")
-        return redirect(url_for("main.home"))
-    return render_template("contact_form.html")
+        name = request.form.get("name")
+        email = request.form.get("email")
+        message = request.form.get("message")
+        flash("Merci pour votre message, nous vous répondrons rapidement 🌱", "success")
+        return redirect(url_for('main.contact_form'))
+    return render_template("contact.html")
+
+
 
 
 @main.route("/search")

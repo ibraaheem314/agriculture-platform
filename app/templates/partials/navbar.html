@@ -1,20 +1,37 @@
 <!-- File: templates/partials/navbar.html -->
 <nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top animate__animated animate__fadeIn">
   <div class="container">
+    <!-- Logo -->
     <a class="navbar-brand fw-bold d-flex align-items-center" href="{{ url_for('main.home') }}">
-      <img src="{{ url_for('static', filename='images/logo-agria.png') }}" alt="AgriIA" style="height: 180px;">
-    </a>    
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+      <img src="{{ url_for('static', filename='images/logo-agria.png') }}" alt="Logo AgriIA" style="height: 60px;" class="me-2">
+    </a>
+
+    <!-- Burger -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- Menu -->
     <div class="collapse navbar-collapse" id="mainNavbar">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.home') }}">Accueil</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.about') }}">À propos</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.agribot') }}">AgriBot</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.articles_list') }}">Articles</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.communaute') }}">Communauté</a></li>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-3 align-items-lg-center">
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'main.home' %}active fw-bold{% endif %}" href="{{ url_for('main.home') }}">Accueil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'main.about' %}active fw-bold{% endif %}" href="{{ url_for('main.about') }}">À propos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'main.agribot' %}active fw-bold{% endif %}" href="{{ url_for('main.agribot') }}">AgriBot</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'main.articles_list' %}active fw-bold{% endif %}" href="{{ url_for('main.articles_list') }}">Articles</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'main.communaute' %}active fw-bold{% endif %}" href="{{ url_for('main.communaute') }}">Communauté</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'main.contact_form' %}active fw-bold{% endif %}" href="{{ url_for('main.contact_form') }}">Contact</a>
+        </li>
 
         {% if session.get("user_id") %}
           <li class="nav-item">
@@ -25,7 +42,7 @@
         {% else %}
           <li class="nav-item">
             <a class="nav-link d-flex align-items-center" href="{{ url_for('main.login') }}">
-              <i class="fas fa-user-circle me-1 text-success"></i> Mon compte
+              <i class="fas fa-user-circle me-1 text-success"></i> Connexion
             </a>
           </li>
         {% endif %}
