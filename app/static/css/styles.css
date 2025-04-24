@@ -1,25 +1,25 @@
-/* ======= PALETTE DE BASE ======= */
+/* 🌿 PALETTE & VARIABLES */
 :root {
   --primary-color: #003524;
   --secondary-color: #FDC728;
   --accent-color: #00A676;
   --light-bg: #f5f9f6;
-  --soft-white: #fdfdfd;
   --text-dark: #222;
   --text-light: #f9f9f9;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  --soft-white: #fdfdfd;
   --radius: 16px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   --transition: all 0.3s ease;
 }
 
-/* ======= GLOBAL ======= */
+/* 🧱 GLOBAL RESET */
 body {
   font-family: 'Poppins', sans-serif;
   background-color: var(--light-bg);
   color: var(--text-dark);
+  line-height: 1.6;
   margin: 0;
   padding: 0;
-  line-height: 1.6;
 }
 
 h1, h2, h3, h4 {
@@ -29,30 +29,35 @@ h1, h2, h3, h4 {
 a {
   color: var(--primary-color);
   text-decoration: none;
+  transition: var(--transition);
 }
 
 a:hover {
   color: var(--accent-color);
 }
 
-/* ======= BOUTONS ======= */
-.btn-primary {
+/* 🟢 BOUTONS */
+.btn-primary,
+.btn-success {
   background-color: var(--primary-color);
   color: white;
   border-radius: var(--radius);
   padding: 10px 24px;
+  border: none;
   transition: var(--transition);
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-success:hover {
   background-color: var(--secondary-color);
-  color: #000;
+  color: black;
+  transform: translateY(-2px);
 }
 
 .btn-outline {
   border: 2px solid var(--primary-color);
   color: var(--primary-color);
-  background-color: transparent;
+  background: transparent;
   border-radius: var(--radius);
 }
 
@@ -62,10 +67,10 @@ a:hover {
   border-color: var(--secondary-color);
 }
 
-/* ======= HERO ======= */
+/* 🧠 HERO SECTION */
 .hero-modern {
   position: relative;
-  background: linear-gradient(135deg, #eafaf1 0%, #f4fcf9 100%);
+  background: linear-gradient(135deg, #eafaf1, #f4fcf9);
   padding: 120px 0;
   text-align: center;
 }
@@ -87,20 +92,15 @@ a:hover {
 
 .hero-modern h1 {
   font-size: 3rem;
-  font-weight: bold;
   color: var(--primary-color);
 }
 
 .hero-modern p {
   font-size: 1.25rem;
-  color: #555;
+  color: #444;
 }
 
-.hero-modern .btn {
-  margin-top: 30px;
-}
-
-/* ======= SECTIONS ======= */
+/* 🧱 SECTIONS */
 section {
   padding: 80px 0;
 }
@@ -116,124 +116,19 @@ section {
   transform: translateY(-5px);
 }
 
-/* ======= DARK MODE ======= */
-body.dark-mode {
-  background-color: #121212;
-  color: var(--text-light);
-}
-
-body.dark-mode .card {
-  background-color: #1e1e1e;
-  color: var(--text-light);
-}
-
-body.dark-mode .btn-primary {
-  background-color: var(--secondary-color);
-  color: black;
-}
-
-.solution-card {
+/* 💡 SOLUTIONS / NEWS */
+.solution-card,
+.news-card {
   background-color: var(--soft-white);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   transition: var(--transition);
 }
 
+.news-card:hover,
 .solution-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-.blockquote {
-  font-style: italic;
-  color: #444;
-}
-
-.blockquote-footer {
-  font-size: 0.9rem;
-  color: #777;
-}
-
-.bg-opacity-10 {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.carousel-item img {
-  object-fit: cover;
-  object-position: center;
-  border: 4px solid var(--secondary-color);
-}
-
-input:focus, textarea:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 5px rgba(0, 53, 36, 0.5);
-  outline: none;
-}
-
-button.btn-success {
-  background-color: var(--primary-color);
-  border: none;
-}
-
-button.btn-success:hover {
-  background-color: var(--secondary-color);
-  color: black;
-}
-
-/* Effet Parallaxe */
-.parallax-section {
-  background-image: url('/static/images/bg-agriculture.jpg'); /* une belle image que tu veux en fond */
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  padding: 80px 0;
-}
-
-/* Cartes effet verre */
-.glass-card {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.glass-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
-}
-
-form .form-floating > label i {
-  margin-right: 8px;
-}
-
-form .form-control:focus {
-  border-color: var(--secondary-color);
-  box-shadow: 0 0 8px rgba(253, 199, 40, 0.5);
-}
-
-form .form-floating > .form-control:not(:placeholder-shown) {
-  background-color: #eaf9f0;
-}
-
-.btn-success:hover {
-  background-color: var(--secondary-color);
-  color: #000;
-  transform: translateY(-2px);
-  transition: all 0.3s ease;
-}
-
-.bg-news {
-  background: linear-gradient(to bottom, #f0fdf4, #ffffff);
-}
-
-.news-card {
-  transition: all 0.3s ease;
-  border-radius: 12px;
-  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
 .news-card img {
@@ -246,27 +141,140 @@ form .form-floating > .form-control:not(:placeholder-shown) {
   transform: scale(1.05);
 }
 
-.news-card:hover {
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  transform: translateY(-6px);
+/* 📮 CONTACT FORMS */
+form .form-floating label i {
+  margin-right: 6px;
 }
 
-.news-card .badge {
-  font-size: 0.75rem;
-  padding: 6px 10px;
-  border-radius: 20px;
-}
-
-.contact-section input,
-.contact-section textarea {
-  border-radius: 8px;
-  box-shadow: none;
-  transition: border-color 0.2s;
-}
-
-.contact-section input:focus,
-.contact-section textarea:focus {
+.form-control:focus,
+textarea:focus {
   border-color: var(--primary-color);
+  box-shadow: 0 0 8px rgba(0, 53, 36, 0.3);
   outline: none;
-  box-shadow: 0 0 0 0.2rem rgba(0, 53, 36, 0.1);
+}
+
+.form-floating > .form-control:not(:placeholder-shown) {
+  background-color: #eaf9f0;
+}
+
+/* 🤖 BOUTON FLOTTANT AgriBot */
+.agri-bubble {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 50px;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+  z-index: 1050;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: fadeInUp 0.6s ease-out;
+  transition: var(--transition);
+}
+
+.agri-bubble:hover {
+  background-color: var(--secondary-color);
+  color: black;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.agri-bubble i {
+  font-size: 1.2rem;
+}
+
+/* ✨ ANIMATIONS */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 🌙 DARK MODE */
+body.dark-mode {
+  background-color: #121212;
+  color: var(--text-light);
+}
+
+body.dark-mode .card,
+body.dark-mode input,
+body.dark-mode textarea {
+  background-color: #1f1f1f;
+  color: var(--text-light);
+}
+
+.agri-bubble {
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 50px;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+  z-index: 1050;
+  text-decoration: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.agri-bubble:hover {
+  background-color: var(--secondary-color);
+  color: black;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.ping-icon-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ping-circle {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 150%;
+  height: 150%;
+  border-radius: 50%;
+  background-color: var(--secondary-color);
+  opacity: 0.4;
+  animation: ping 1.8s ease-out infinite;
+  z-index: -1;
+}
+
+@keyframes ping {
+  0% {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+.bubble-text {
+  font-weight: 500;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
