@@ -2,21 +2,16 @@
 
 {% block title %}AgriBot – AgriHelper{% endblock %}
 
-{% block head %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-{% endblock %}
-
 {% block content %}
 <div class="container py-5">
   <h2 class="text-center mb-5 text-success">AgriBot</h2>
   <div class="row justify-content-center">
-    <div class="col-md-6">
+    <div class="col-md-6 text-center">
       <form id="chatbot-form" method="POST">
-        <input type="text" name="question" id="question" class="form-control mb-3 bg-light" placeholder="Posez une question à AgriBot..." required>
+        <input type="text" name="question" id="question" class="form-control mb-3" placeholder="Posez votre question ici" required>
         <button type="submit" class="btn btn-success w-100">Envoyer</button>
       </form>
-
-      <div id="chatbot-response" class="mt-4 alert d-none" role="alert"></div>
+      <div id="chatbot-response" class="alert mt-3 d-none" role="alert"></div>
     </div>
   </div>
 </div>
@@ -26,16 +21,22 @@
 <script>
   $("#chatbot-form").on("submit", function(e) {
     e.preventDefault();
-    const question = $("#question").val();
-    const $responseBox = $("#chatbot-response");
+    const q = $("#question").val();
+    const $res = $("#chatbot-response");
 
-    $.post("{{ url_for('main.agribot') }}", { question: question })
+    $res.removeClass("d-none alert-danger alert-success").html("Chargement...");
+
+    $.post("{{ url_for('main.agribot') }}", { question: q })
       .done(res => {
-        const content = res.response ? `<strong>AgriBot :</strong> ${res.response}` : `<strong>Erreur :</strong> ${res.error}`;
-        $responseBox.removeClass("d-none alert-danger").addClass("alert-success").html(content);
+        $res
+          .addClass("alert-success")
+          .html(`<strong>Réponse :</strong> ${res.response}`);
       })
-      .fail(() => {
-        $responseBox.removeClass("d-none alert-success").addClass("alert-danger").html("<strong>Erreur :</strong> Impossible d’obtenir une réponse pour l’instant.");
+      .fail(xhr => {
+        const msg = xhr.responseJSON?.error || "Erreur inconnue.";
+        $res
+          .addClass("alert-danger")
+          .html(`<strong>Erreur :</strong> ${msg}`);
       });
   });
 </script>

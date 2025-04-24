@@ -14,10 +14,11 @@ load_dotenv()
 main = Blueprint('main', __name__)
 
 # Clés API
+
+HUGGINGFACE_API_KEY = os.getenv("HUG2")
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
 AIRVISUAL_API_KEY = os.getenv("AIRVISUAL_API_KEY")
 PLANT_ID_API_KEY = os.getenv("PLANT_ID_API_KEY")
-HUGGINGFACE_API_KEY = os.getenv("HUG2")
 API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base"
 
 # Chatbot pipeline (PyTorch, TF disabled via env)
@@ -112,39 +113,40 @@ def search():
 # 📌 Pages dynamiques
 # ========================
 
-@main.route("/agribot", methods=["GET", "POST"])
+@main.route('/agribot', methods=['GET', 'POST'])
 def agribot():
-    if request.method == "POST":
-        user_question = request.form.get("question", "").strip()
-        if not user_question:
-            return jsonify({"error": "Veuillez poser une question."}), 400
-
-        # Prompt amical et conversationnel
-        headers = {"Authorization": f"Bearer {HUGGINGFACE_API_KEY}"}
-        prompt = f"Tu es AgriBot, un assistant sympathique en agriculture. Réponds en français, naturellement et de manière utile.\n\nUtilisateur : {user_question}\nAgriBot :"
-        payload = {
-            "inputs": prompt,
-            "parameters": {
-                "max_new_tokens": 100,
-                "temperature": 0.7,
-                "top_p": 0.9
-            }
-        }
+    if request.method == 'POST':
+        q = request.form.get('question', '').strip()
+        if not q:
+            return jsonify({'error': 'Veuillez poser une question.'}), 400
 
         try:
-            response = requests.post("https://api-inference.huggingface.co/models/google/flan-t5-base", headers=headers, json=payload)
+            headers = {
+                "Authorization": f"Bearer {HUGGINGFACE_API_KEY}"
+            }
+            payload = {
+                "inputs": q,
+                "parameters": {"temperature": 0.7, "max_new_tokens": 100}
+            }
+            response = requests.post(
+                "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1",
+                headers=headers,
+                json=payload
+            )
             result = response.json()
 
-            if "error" in result:
-                return jsonify({"error": result["error"]}), 500
+            # Vérifie le format retourné
+            if isinstance(result, list) and 'generated_text' in result[0]:
+                return jsonify({'response': result[0]['generated_text']})
+            elif isinstance(result, dict) and 'error' in result:
+                return jsonify({'error': result['error']}), 500
+            else:
+                return jsonify({'error': 'Réponse inattendue du modèle.'}), 500
 
-            # Extraire proprement la réponse
-            bot_response = result[0]["generated_text"].split("AgriBot :")[-1].strip()
-            return jsonify({"response": bot_response})
         except Exception as e:
-            return jsonify({"error": f"Erreur lors de l'appel à l'API : {str(e)}"}), 500
+            return jsonify({'error': f"Erreur serveur : {e}"}), 500
 
-    return render_template("agribot.html")
+    return render_template('agribot.html')
 
 
 
