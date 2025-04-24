@@ -1,43 +1,66 @@
 {% extends "base.html" %}
 
-{% block title %}AgriBot – AgriHelper{% endblock %}
+{% block title %}🤖 AgriBot – Votre assistant agricole{% endblock %}
 
 {% block content %}
 <div class="container py-5">
-  <h2 class="text-center mb-5 text-success">AgriBot</h2>
-  <div class="row justify-content-center">
-    <div class="col-md-6 text-center">
-      <form id="chatbot-form" method="POST">
-        <input type="text" name="question" id="question" class="form-control mb-3" placeholder="Posez votre question ici" required>
-        <button type="submit" class="btn btn-success w-100">Envoyer</button>
-      </form>
-      <div id="chatbot-response" class="alert mt-3 d-none" role="alert"></div>
+    <h2 class="text-center text-success mb-4"><i class="fas fa-robot"></i> AgriBot – Votre assistant agricole</h2>
+
+    <!-- Zone de discussion -->
+    <div class="card mb-4" style="min-height: 300px;">
+        <div class="card-body" id="chat-box" style="max-height: 400px; overflow-y: auto;">
+            <!-- Messages affichés ici -->
+        </div>
     </div>
-  </div>
+
+    <!-- Formulaire de saisie -->
+    <form id="chatbot-form" class="d-flex">
+        <input type="text" id="question" name="question" class="form-control me-2" placeholder="Posez une question…" required>
+        <button type="submit" class="btn btn-success">Envoyer</button>
+    </form>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script>
-  $("#chatbot-form").on("submit", function(e) {
-    e.preventDefault();
-    const q = $("#question").val();
-    const $res = $("#chatbot-response");
+  const chatBox = document.getElementById("chat-box");
+  const form = document.getElementById("chatbot-form");
+  const input = document.getElementById("question");
 
-    $res.removeClass("d-none alert-danger alert-success").html("Chargement...");
+  function appendMessage(sender, text, type = "user") {
+      const msg = document.createElement("div");
+      msg.className = "mb-2";
+      msg.innerHTML = `<strong class="${type === 'user' ? 'text-success' : (type === 'error' ? 'text-danger' : 'text-primary')}">${sender} :</strong> ${text}`;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+  }
 
-    $.post("{{ url_for('main.agribot') }}", { question: q })
-      .done(res => {
-        $res
-          .addClass("alert-success")
-          .html(`<strong>Réponse :</strong> ${res.response}`);
+  form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const question = input.value.trim();
+      if (!question) return;
+
+      appendMessage("Vous", question, "user");
+      input.value = "";
+
+      fetch("{{ url_for('main.agribot') }}", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question })
       })
-      .fail(xhr => {
-        const msg = xhr.responseJSON?.error || "Erreur inconnue.";
-        $res
-          .addClass("alert-danger")
-          .html(`<strong>Erreur :</strong> ${msg}`);
-      });
+          .then(res => res.json())
+          .then(data => {
+              if (data.error) {
+                  const errorMessage = typeof data.error === "object" ? JSON.stringify(data.error) : data.error;
+                  appendMessage("AgriBot", `Erreur : ${errorMessage}`, "error");
+              } else {
+                  appendMessage("AgriBot", data.response, "bot");
+              }
+          })
+          .catch(err => {
+              appendMessage("AgriBot", "Erreur de connexion.", "error");
+          });
   });
 </script>
+
 {% endblock %}

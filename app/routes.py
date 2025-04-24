@@ -14,7 +14,7 @@ load_dotenv()
 main = Blueprint('main', __name__)
 
 # Clés API
-
+OPENROUTER_API_KEY = os.getenv("OPEN_ROUTER_KEY")
 HUGGINGFACE_API_KEY = os.getenv("HUG2")
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
 AIRVISUAL_API_KEY = os.getenv("AIRVISUAL_API_KEY")
@@ -113,40 +113,53 @@ def search():
 # 📌 Pages dynamiques
 # ========================
 
-@main.route('/agribot', methods=['GET', 'POST'])
+# Agribot route
+import os
+import requests
+from flask import Blueprint, request, render_template, jsonify
+
+@main.route("/agribot", methods=["GET", "POST"])
 def agribot():
-    if request.method == 'POST':
-        q = request.form.get('question', '').strip()
-        if not q:
-            return jsonify({'error': 'Veuillez poser une question.'}), 400
+    if request.method == "POST":
+        try:
+            data = request.get_json()  # <== important pour récupérer du JSON
+            user_input = data.get("question", "").strip()
+        except Exception:
+            return jsonify({"error": "Requête invalide."}), 400
+
+        if not user_input:
+            return jsonify({"error": "Veuillez poser une question."}), 400
 
         try:
+            url = "https://openrouter.ai/api/v1/chat/completions"
             headers = {
-                "Authorization": f"Bearer {HUGGINGFACE_API_KEY}"
+                "Authorization": f"Bearer {os.getenv('OPEN_ROUTER_KEY')}",
+                "Content-Type": "application/json",
+                "HTTP-Referer": "http://localhost:5000"
             }
+
             payload = {
-                "inputs": q,
-                "parameters": {"temperature": 0.7, "max_new_tokens": 100}
-            }
-            response = requests.post(
-                "https://api-inference.huggingface.co/models/tiiuae/falcon-rw-1b",
-                headers=headers,
-                json=payload
-            )
-            result = response.json()
+                "model": "mistralai/mistral-7b-instruct",
+                "messages": [
+                {"role": "system", "content": "Tu es AgriBot, un assistant agricole francophone expert."},
+                {"role": "user", "content": user_input}]}
 
-            # Vérifie le format retourné
-            if isinstance(result, list) and 'generated_text' in result[0]:
-                return jsonify({'response': result[0]['generated_text']})
-            elif isinstance(result, dict) and 'error' in result:
-                return jsonify({'error': result['error']}), 500
+            response = requests.post(url, headers=headers, json=payload, timeout=30)
+            data = response.json()
+
+            if "choices" in data:
+                reply = data["choices"][0]["message"]["content"]
+                return jsonify({"response": reply})
             else:
-                return jsonify({'error': 'Réponse inattendue du modèle.'}), 500
-
+                return jsonify({"error": data.get("error", "Réponse vide du modèle.")})
+        except requests.exceptions.RequestException as e:
+            return jsonify({"error": f"Erreur de connexion : {str(e)}"})
         except Exception as e:
-            return jsonify({'error': f"Erreur serveur : {e}"}), 500
+            return jsonify({"error": f"Erreur serveur : {str(e)}"})
 
-    return render_template('agribot.html')
+    return render_template("agribot.html")
+
+
 
 
 
