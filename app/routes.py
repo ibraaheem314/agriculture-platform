@@ -129,7 +129,7 @@ def agribot():
                 "parameters": {"temperature": 0.7, "max_new_tokens": 100}
             }
             response = requests.post(
-                "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1",
+                "https://api-inference.huggingface.co/models/tiiuae/falcon-rw-1b",
                 headers=headers,
                 json=payload
             )
