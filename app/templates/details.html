@@ -1,0 +1,44 @@
+<!-- File: templates/details.html -->
+{% extends "base.html" %}
+
+{% block title %}Résultats personnalisés – AgriHelper{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-4">Résultats pour {{ location or 'vos coordonnées' }}</h2>
+
+<!-- Section carte interactive -->
+<div id="interactive-map" style="height: 400px;" class="mb-5"></div>
+
+{%!-- Prévisions météo --%}
+<section class="mt-5">
+  <h3 class="text-center mb-4"><i class="fas fa-cloud-sun"></i> Prévisions météo</h3>
+  {% if weather_data %}
+  <div class="card text-center">
+    <div class="card-body">
+      <p class="card-text">Température : {{ weather_data[0].temp }}°C</p>
+      <p class="card-text">Description : {{ weather_data[0].description }}</p>
+    </div>
+  </div>
+  {% else %}
+  <div class="alert alert-warning text-center">Impossible de récupérer les prévisions météo.</div>
+  {% endif %}
+</section>
+
+{%!-- Pollution de l'air --%}
+<section class="mt-5">
+  <h3 class="text-center mb-4"><i class="fas fa-smog"></i> Pollution de l'air</h3>
+  {% if pollution_data %}
+  <div class="card text-center">
+    <div class="card-body">
+      <p class="card-text">Indice AQI : {{ pollution_data.aqi }}</p>
+      <p class="card-text">Qualité de l'air : {{ pollution_data.quality }}</p>
+    </div>
+  </div>
+  {% else %}
+  <div class="alert alert-warning text-center">Impossible de récupérer les données de pollution.</div>
+  {% endif %}
+</section>
+
+{%!-- Typologie des sols --%}
+<section class="mt-5">
+  <h3 class="text-center mb-4"><i class="fas fa-seedling"></i> Typologie des sols</

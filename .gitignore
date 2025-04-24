@@ -5,6 +5,17 @@ __pycache__/
 *.pyd
 .env
 
+# Database
+instance/*.db
+
+# Uploads
+uploads/
+
+# IDE & OS files
+*.pyc
+__pycache__/
+.DS_Store
+
 # Dépendances
 /build/
 venv/

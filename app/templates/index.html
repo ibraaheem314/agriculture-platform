@@ -38,7 +38,7 @@
                         <i class="fas fa-robot fa-3x mb-3" style="color: #28a745;"></i>
                         <h5 class="card-title">AgriBot</h5>
                         <p class="card-text">Posez vos questions sur les plantes, les maladies ou les pratiques agricoles.</p>
-                        <a href="/agribot" class="btn btn-success">Accéder à l'AgriBot</a>
+                        <a href="{{url_for('main.agribot')}}" class="btn btn-success">Accéder à l'AgriBot</a>
                     </div>
                 </div>
             </div>
@@ -49,7 +49,7 @@
                         <i class="fas fa-cloud-sun fa-3x mb-3" style="color: #FFC107;"></i>
                         <h5 class="card-title">Prévisions Météo</h5>
                         <p class="card-text">Consultez les prévisions météo détaillées pour planifier vos activités.</p>
-                        <a href="/weather" class="btn btn-success">Voir les prévisions</a>
+                        <a href="{{url_for('main.weather')}}" class="btn btn-success">Voir les prévisions</a>
                     </div>
                 </div>
             </div>
@@ -60,7 +60,7 @@
                         <i class="fas fa-seedling fa-3x mb-3" style="color: #28a745;"></i>
                         <h5 class="card-title">Typologie des Sols</h5>
                         <p class="card-text">Découvrez les caractéristiques des sols de votre région.</p>
-                        <a href="/soils" class="btn btn-success">Explorer les sols</a>
+                        <a href="{{url_for('main.soils')}}" class="btn btn-success">Explorer les sols</a>
                     </div>
                 </div>
             </div>
@@ -87,7 +87,6 @@
         </div>
     </div>
 </section>
-
 <!-- Section Infos et Mises à Jour -->
 <section class="updates-section py-5" style="background-color: #f8f9fa;">
     <div class="container">
@@ -100,7 +99,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Nouvelles fonctionnalités d'AgriBot</h5>
                         <p class="card-text">Découvrez les dernières améliorations apportées à notre AgriBot pour une meilleure identification des plantes.</p>
-                        <a href="/article1" class="btn btn-success">Lire l'article</a>
+                        <a href="{{ url_for('main.articles') }}" class="btn btn-success">Lire l'article</a>
                     </div>
                 </div>
             </div>
@@ -111,7 +110,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Guide pratique : Prévisions météo</h5>
                         <p class="card-text">Apprenez à utiliser nos prévisions météo pour optimiser vos activités agricoles.</p>
-                        <a href="/article2" class="btn btn-success">Lire l'article</a>
+                        <a href="{{ url_for('main.articles') }}" class="btn btn-success">Lire l'article</a>
                     </div>
                 </div>
             </div>
@@ -122,13 +121,13 @@
                     <div class="card-body">
                         <h5 class="card-title">Typologie des sols : Nouveaux outils</h5>
                         <p class="card-text">Explorez les nouvelles fonctionnalités pour analyser les caractéristiques des sols.</p>
-                        <a href="/article3" class="btn btn-success">Lire l'article</a>
+                        <a href="{{ url_for('main.articles') }}" class="btn btn-success">Lire l'article</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="text-center mt-5">
-            <a href="/articles" class="btn btn-primary">Voir toutes les mises à jour</a>
+            <a href="{{ url_for('main.articles') }}" class="btn btn-primary">Voir toutes les mises à jour</a>
         </div>
     </div>
 </section>
@@ -141,7 +140,7 @@
             Partagez vos expériences, posez vos questions et obtenez des conseils d'experts agricoles.
         </p>
         <div class="text-center">
-            <a href="/communaute" class="btn btn-success">Rejoindre la communauté</a>
+            <a href="{{ url_for('main.communaute') }}" class="btn btn-success">Rejoindre la communauté</a>
         </div>
     </div>
 </section>
@@ -150,7 +149,7 @@
 <section class="contact-section py-5">
     <div class="container">
         <h2 class="text-center mb-5" style="color: #28a745;">Besoin d'aide ? Contactez-nous</h2>
-        <form method="POST" action="/contact" class="row g-3 justify-content-center">
+        <form method="POST" action="{{ url_for('main.contact_form') }}" class="row g-3 justify-content-center">
             <div class="col-md-6">
                 <label for="name" class="form-label">Nom complet :</label>
                 <input type="text" class="form-control" id="name" name="name" required>
@@ -169,17 +168,28 @@
         </form>
     </div>
 </section>
-
 <!-- Pied de Page -->
 <footer class="bg-dark text-white py-4 mt-5">
     <div class="container text-center">
         <ul class="list-inline mb-3">
-            <li class="list-inline-item"><a href="/" class="text-white">Accueil</a></li>
-            <li class="list-inline-item"><a href="/about" class="text-white">À Propos</a></li>
-            <li class="list-inline-item"><a href="/agribot" class="text-white">AgriBot</a></li>
-            <li class="list-inline-item"><a href="/forms-ia" class="text-white">Articles</a></li>
-            <li class="list-inline-item"><a href="/coachs" class="text-white">Coachs</a></li>
-            <li class="list-inline-item"><a href="/communaute" class="text-white">Communauté</a></li>
+            <li class="list-inline-item">
+                <a href="{{ url_for('main.home') }}" class="text-white">Accueil</a>
+            </li>
+            <li class="list-inline-item">
+                <a href="{{ url_for('main.about') }}" class="text-white">À Propos</a>
+            </li>
+            <li class="list-inline-item">
+                <a href="{{ url_for('main.agribot') }}" class="text-white">AgriBot</a>
+            </li>
+            <li class="list-inline-item">
+                <a href="{{ url_for('main.articles') }}" class="text-white">Articles</a>
+            </li>
+            <li class="list-inline-item">
+                <a href="{{ url_for('main.coachs') }}" class="text-white">Coachs</a>
+            </li>
+            <li class="list-inline-item">
+                <a href="{{ url_for('main.communaute') }}" class="text-white">Communauté</a>
+            </li>
         </ul>
         <div class="social-icons mb-3">
             <a href="#" class="text-white me-3" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
@@ -189,4 +199,5 @@
         <p class="small">&copy; 2025 AgriHelper. Tous droits réservés.</p>
     </div>
 </footer>
+
 {% endblock %}

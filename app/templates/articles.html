@@ -1,0 +1,7 @@
+{% import 'macros.html' as m %}
+<div class="row">
+  {% for art in articles %}
+    {{ m.card(art.title, art.image, art.summary, {'endpoint':'article_detail','args':{'id':art.id}}) }}
+  {% endfor %}
+</div>
+{{ m.pagination(page, total_pages, 'articles') }}

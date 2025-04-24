@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script>
     // Initialiser la carte
-    var map = L.map('interactive-map').setView([{{ lat }}, {{ lon }}], 13);
+    var map = L.map('interactive-map').setView([{lat}, {lon}], 13);
 
     // Ajouter une couche de tuiles OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -19,15 +19,14 @@
     }).addTo(map);
 
     // Ajouter un marqueur à la position spécifiée
-    L.marker([{{ lat }}, {{ lon }}]).addTo(map)
+    L.marker([{lat }, {lon}]).addTo(map)
         .bindPopup("Votre emplacement : {{ location or 'Coordonnées GPS' }}")
         .openPopup();
 
     // Exemple : Ajouter des cercles pour représenter la pollution
     var pollutionZones = [
-        { lat: {{ lat }}, lon: {{ lon }}, level: "Élevé" },
-        { lat: {{ lat + 0.1 }}, lon: {{ lon + 0.1 }}, level: "Modéré" }
-    ];
+        { lat: {lat}, lon: {lon }, level: "Élevé" },
+        { lat: {lat+0.1 }, lon: {lon + 0.1 }, level: "Modéré"}];
 
     pollutionZones.forEach(zone => {
         L.circle([zone.lat, zone.lon], {

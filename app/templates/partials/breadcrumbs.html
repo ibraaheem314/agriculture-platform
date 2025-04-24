@@ -1,0 +1,15 @@
+<!-- templates/partials/breadcrumbs.html -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      {% for name, endpoint, args in trail %}
+        <li class="breadcrumb-item {{ 'active' if loop.last }}">
+          {% if not loop.last %}
+            <a href="{{ url_for(endpoint, **args) }}">{{ name }}</a>
+          {% else %}
+            {{ name }}
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  </nav>
+  
