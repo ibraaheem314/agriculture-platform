@@ -103,89 +103,96 @@
   </section>
   
   <!-- Stats - Impact -->
-  <section class="py-5 text-white" style="background-color: #00382c;">
+  <section class="py-5" style="background: linear-gradient(135deg, #00382c 0%, #025443 100%); color: white;">
     <div class="container text-center">
-      <h2 class="mb-5 fw-bold">🌍 Notre impact en chiffres</h2>
-      <div class="row g-4">
-        <div class="col-md-3">
-          <h3 class="display-5 fw-bold counter" data-target="10000">
-            <i class="fas fa-users"></i> <span>0</span>+
-          </h3>
-          <p>Utilisateurs actifs</p>
+      <h2 class="fw-bold mb-5">📊 Notre impact en chiffres</h2>
+      <div class="row g-4 justify-content-center">
+        
+        <div class="col-6 col-md-3">
+          <div class="p-4 bg-white bg-opacity-10 rounded">
+            <i class="fas fa-users fa-2x mb-2 text-warning"></i>
+            <h3 class="fw-bold">10 000+</h3>
+            <p>Utilisateurs actifs</p>
+          </div>
         </div>
-        <div class="col-md-3">
-          <h3 class="display-5 fw-bold counter" data-target="500000">
-            <i class="fas fa-seedling"></i> <span>0</span>+
-          </h3>
-          <p>Hectares monitorés</p>
+  
+        <div class="col-6 col-md-3">
+          <div class="p-4 bg-white bg-opacity-10 rounded">
+            <i class="fas fa-map fa-2x mb-2 text-success"></i>
+            <h3 class="fw-bold">500 000+</h3>
+            <p>Hectares monitorés</p>
+          </div>
         </div>
-        <div class="col-md-3">
-          <h3 class="display-5 fw-bold counter" data-target="120000">
-            <i class="fas fa-robot"></i> <span>0</span>+
-          </h3>
-          <p>Interactions AgriBot</p>
+  
+        <div class="col-6 col-md-3">
+          <div class="p-4 bg-white bg-opacity-10 rounded">
+            <i class="fas fa-robot fa-2x mb-2 text-info"></i>
+            <h3 class="fw-bold">120 000+</h3>
+            <p>Interactions AgriBot</p>
+          </div>
         </div>
-        <div class="col-md-3">
-          <h3 class="display-5 fw-bold counter" data-target="95">
-            <i class="fas fa-cloud-sun"></i> <span>0</span>%
-          </h3>
-          <p>Précision météo</p>
+  
+        <div class="col-6 col-md-3">
+          <div class="p-4 bg-white bg-opacity-10 rounded">
+            <i class="fas fa-bullseye fa-2x mb-2 text-light"></i>
+            <h3 class="fw-bold">95%</h3>
+            <p>Précision météo</p>
+          </div>
         </div>
+  
       </div>
     </div>
   </section>
   
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const counters = document.querySelectorAll(".counter");
-      counters.forEach(counter => {
-        const span = counter.querySelector("span");
-        const update = () => {
-          const target = +counter.dataset.target;
-          const count = +span.innerText;
-          const increment = target / 200;
-          if (count < target) {
-            span.innerText = Math.ceil(count + increment);
-            setTimeout(update, 15);
-          } else {
-            span.innerText = target.toLocaleString();
-          }
-        };
-        update();
-      });
-    });
-  </script>
- 
 <!-- Témoignages / Carrousel amélioré avec SwiperJS -->
 <section class="py-5 bg-light">
-    <div class="container">
-      <h2 class="text-center mb-5 fw-bold" style="color: #00382c;">📸 Ils nous font confiance</h2>
-      <div class="swiper mySwiper">
-        <div class="swiper-wrapper">
-  
-          <div class="swiper-slide text-center">
-            <img src="{{ url_for('static', filename='images/farm1.jpg') }}" class="img-fluid rounded mb-3" alt="...">
-            <div class="bg-dark bg-opacity-50 rounded p-3 d-inline-block text-white">
-              <h5>Agriculteur de Kolda</h5>
-              <p>Grâce à AgriHelper, j'ai pu mieux anticiper les pluies et gérer mes plantations !</p>
+  <div class="container">
+    <h2 class="text-center fw-bold mb-5" style="color: var(--primary-color);">🌟 Ils nous font confiance</h2>
+    
+    <div id="carouselTestimonials" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+
+        <!-- Témoignage 1 -->
+        <div class="carousel-item active">
+          <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+              <img src="{{ url_for('static', filename='images/farm1.jpg') }}" 
+                   class="rounded-circle shadow mb-4" width="100" height="100" alt="Agriculteur 1">
+              <blockquote class="blockquote">
+                <p class="fs-5">🌾 « Grâce à AgriHelper, j'ai anticipé la météo et boosté mes récoltes de 40% ! »</p>
+                <footer class="blockquote-footer mt-2">Un agriculteur de Kolda</footer>
+              </blockquote>
             </div>
           </div>
-  
-          <div class="swiper-slide text-center">
-            <img src="{{ url_for('static', filename='images/farm2.jpg') }}" class="img-fluid rounded mb-3" alt="...">
-            <div class="bg-dark bg-opacity-50 rounded p-3 d-inline-block text-white">
-              <h5>Ferme de Sédhiou</h5>
-              <p>La typologie des sols m'a permis d'améliorer mes rendements de 35% !</p>
-            </div>
-          </div>
-  
         </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-pagination"></div>
+
+        <!-- Témoignage 2 -->
+        <div class="carousel-item">
+          <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+              <img src="{{ url_for('static', filename='images/farm2.jpg') }}" 
+                   class="rounded-circle shadow mb-4" width="100" height="100" alt="Agriculteur 2">
+              <blockquote class="blockquote">
+                <p class="fs-5">🌿 « L'analyse des sols m'a permis de choisir les bonnes semences. Résultat incroyable ! »</p>
+                <footer class="blockquote-footer mt-2">Ferme de Sédhiou</footer>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+
       </div>
+
+      <!-- Contrôles -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselTestimonials" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselTestimonials" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
     </div>
-  </section>
+  </div>
+</section>
+
   
   <!-- Mises à Jour -->
   <section class="py-5" style="background-color: #f4fdf6;">
