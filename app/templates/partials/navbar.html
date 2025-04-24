@@ -1,31 +1,33 @@
 <!-- File: templates/partials/navbar.html -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{{ url_for('main.home') }}">
-      <span style="color: #28a745; font-size: 2rem;">agr</span>
-      <span style="color: #FFC107; font-size: 2rem;">IA</span>
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top animate__animated animate__fadeIn">
+  <div class="container">
+    <a class="navbar-brand fw-bold d-flex align-items-center" href="{{ url_for('main.home') }}">
+      <img src="{{ url_for('static', filename='images/logo-agria.png') }}" alt="AgriIA" style="height: 150px;">
+    </a>    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <!-- Recherche rapide -->
-      <form class="d-flex me-3" action="{{ url_for('main.search') }}" method="GET">
-        <input class="form-control" type="search" name="q" placeholder="Rechercher..." aria-label="Search">
-        <button class="btn btn-outline-success ms-2" type="submit"><i class="fas fa-search"></i></button>
-      </form>
-      <ul class="navbar-nav ms-auto">
+
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item"><a class="nav-link" href="{{ url_for('main.home') }}">Accueil</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('main.about') }}">À propos</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('main.agribot') }}">AgriBot</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('main.articles') }}">Articles</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('main.communaute') }}">Communauté</a></li>
+
         {% if session.get("user_id") %}
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.profile') }}">Profil</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.logout') }}">Déconnexion</a></li>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" href="{{ url_for('main.profile') }}">
+              <i class="fas fa-user-circle me-1 text-success"></i> Mon compte
+            </a>
+          </li>
         {% else %}
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.login') }}">Connexion</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.register') }}">Inscription</a></li>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" href="{{ url_for('main.login') }}">
+              <i class="fas fa-user-circle me-1 text-success"></i> Mon compte
+            </a>
+          </li>
         {% endif %}
       </ul>
     </div>

@@ -1,18 +1,31 @@
 <!-- File: templates/partials/footer.html -->
-<footer class="bg-dark text-white py-4 mt-5">
-    <div class="container text-center">
-      <ul class="list-inline mb-3">
-        <li class="list-inline-item"><a href="{{ url_for('main.home') }}" class="text-white">Accueil</a></li>
-        <li class="list-inline-item"><a href="{{ url_for('main.about') }}" class="text-white">À propos</a></li>
-        <li class="list-inline-item"><a href="{{ url_for('main.agribot') }}" class="text-white">AgriBot</a></li>
-        <li class="list-inline-item"><a href="{{ url_for('main.articles') }}" class="text-white">Articles</a></li>
-        <li class="list-inline-item"><a href="{{ url_for('main.communaute') }}" class="text-white">Communauté</a></li>
-      </ul>
-      <div class="social-icons mb-3">
-        <a href="#" class="text-white me-3" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-        <a href="#" class="text-white me-3" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-        <a href="#" class="text-white" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+<footer class="bg-dark text-white pt-5 pb-3 mt-5">
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <h5 class="fw-bold">AgriHelper</h5>
+        <p>Votre partenaire pour une agriculture intelligente, durable et innovante.</p>
       </div>
-      <p class="small">&copy; 2025 AgriHelper. Tous droits réservés.</p>
+      <div class="col-md-3">
+        <h6>Navigation</h6>
+        <ul class="list-unstyled">
+          <li><a href="{{ url_for('main.home') }}" class="text-white text-decoration-none">Accueil</a></li>
+          <li><a href="{{ url_for('main.about') }}" class="text-white text-decoration-none">À propos</a></li>
+          <li><a href="{{ url_for('main.articles') }}" class="text-white text-decoration-none">Articles</a></li>
+          <li><a href="{{ url_for('main.communaute') }}" class="text-white text-decoration-none">Communauté</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h6>Suivez-nous</h6>
+        <div class="d-flex gap-3">
+          <a href="#" class="text-white"><i class="fab fa-facebook fa-lg"></i></a>
+          <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
+          <a href="#" class="text-white"><i class="fab fa-linkedin fa-lg"></i></a>
+          <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
+        </div>
+      </div>
     </div>
-  </footer>
+    <hr class="border-secondary">
+    <p class="text-center mb-0">&copy; 2025 AgriHelper – Tous droits réservés.</p>
+  </div>
+</footer>

@@ -114,15 +114,20 @@ def search():
 # ========================
 
 # Agribot route
-import os
-import requests
-from flask import Blueprint, request, render_template, jsonify
+
+# Initialisation de la mémoire (stockée dans la session utilisateur)
+def get_chat_memory():
+    if "agribot_memory" not in session:
+        session["agribot_memory"] = [
+            {"role": "system", "content": "Tu es AgriBot, un assistant agricole francophone expert en IA, en climat et en agriculture durable. Réponds de manière naturelle, polie et utile."}
+        ]
+    return session["agribot_memory"]
 
 @main.route("/agribot", methods=["GET", "POST"])
 def agribot():
     if request.method == "POST":
         try:
-            data = request.get_json()  # <== important pour récupérer du JSON
+            data = request.get_json()
             user_input = data.get("question", "").strip()
         except Exception:
             return jsonify({"error": "Requête invalide."}), 400
@@ -130,38 +135,42 @@ def agribot():
         if not user_input:
             return jsonify({"error": "Veuillez poser une question."}), 400
 
+        # Récupération de l'historique
+        messages = get_chat_memory()
+        messages.append({"role": "user", "content": user_input})
+
+        # Configuration requête
+        url = "https://openrouter.ai/api/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {os.getenv('OPEN_ROUTER_KEY')}",
+            "Content-Type": "application/json",
+            "HTTP-Referer": "http://localhost:5000"
+        }
+
+        payload = {
+            "model": "mistralai/mistral-7b-instruct",  # modèle valide et léger
+            "messages": messages
+        }
+
         try:
-            url = "https://openrouter.ai/api/v1/chat/completions"
-            headers = {
-                "Authorization": f"Bearer {os.getenv('OPEN_ROUTER_KEY')}",
-                "Content-Type": "application/json",
-                "HTTP-Referer": "http://localhost:5000"
-            }
-            payload = {
-                    "model": "mistralai/mistral-7b-instruct",  # Ou un autre modèle pris en charge par OpenRouter
-                    "messages": [
-                {
-                    "role": "system",
-                    "content": "Tu es AgriBot, un assistant virtuel spécialisé en agriculture, agroécologie, météorologie agricole, IA appliquée aux cultures, gestion des sols et élevage durable. Tu réponds en français de manière claire, utile et bienveillante, même à des personnes peu technophiles. Tu privilégies l'agriculture durable et les conseils pratiques adaptés au contexte africain et tropical. Tu peux aussi proposer des outils modernes (IA, IoT, etc.) pour aider les agriculteurs."
-                },
-            {"role": "user", "content": user_input}]}
-
             response = requests.post(url, headers=headers, json=payload, timeout=30)
-            data = response.json()
+            response.raise_for_status()
+            result = response.json()
 
-            if "choices" in data:
-                reply = data["choices"][0]["message"]["content"]
+            if "choices" in result and result["choices"]:
+                reply = result["choices"][0]["message"]["content"]
+                messages.append({"role": "assistant", "content": reply})
+                session["agribot_memory"] = messages  # mettre à jour la session
                 return jsonify({"response": reply})
             else:
-                return jsonify({"error": data.get("error", "Réponse vide du modèle.")})
+                return jsonify({"error": "Réponse vide du modèle."}), 500
+
         except requests.exceptions.RequestException as e:
-            return jsonify({"error": f"Erreur de connexion : {str(e)}"})
+            return jsonify({"error": f"Erreur réseau : {str(e)}"}), 503
         except Exception as e:
-            return jsonify({"error": f"Erreur serveur : {str(e)}"})
+            return jsonify({"error": f"Erreur interne : {str(e)}"}), 500
 
     return render_template("agribot.html")
-
-
 
 
 
@@ -242,6 +251,11 @@ def predict_image():
         if sug:
             return jsonify({'class':sug[0].get('plant_name','Unknown')})
     return jsonify({'error':'Identification failed'}),500
+
+@main.route("/account")
+def account_portal():
+    return render_template("account_portal.html")
+
 
 @main.route('/coachs')
 def coachs():

@@ -1,239 +1,180 @@
-/* Variables globales */
+/* Variables globales – basées sur les couleurs du nouveau logo agrIA */
 :root {
-    --primary-color: #28a745; /* Vert principal */
-    --secondary-color: #FFC107; /* Jaune */
-    --background-color: #F8F9FA; /* Gris clair */
-    --text-color: #333333; /* Noir/gris foncé */
-    --accent-color: #007BFF; /* Bleu ciel pour les liens */
-    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --primary-color: #003524; /* Vert profond du logo */
+    --secondary-color: #FDC728; /* Jaune vif du logo */
+    --background-color: #F5F5F5; /* Gris très clair pour les fonds */
+    --text-color: #222; /* Noir doux pour la lisibilité */
+    --accent-color: #1976D2; /* Bleu pour certains liens ou accents */
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* Styles globaux */
 body {
     font-family: 'Roboto', sans-serif;
-    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
     margin: 0;
     padding: 0;
+    line-height: 1.6;
+}
+
+.navbar-brand img {
+    height: 45px;
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand img:hover {
+    transform: scale(1.1);
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.btn-success {
+    background-color: var(--primary-color);
+    border: none;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.btn-success:hover {
+    background-color: var(--secondary-color);
+    color: #000;
+}
+
+.card {
+    border-radius: 12px;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+}
+
+.card-body i {
+    color: var(--primary-color);
 }
 
 .hero-section {
     height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.card {
-    transition: transform 0.3s ease;
-}
-.card:hover {
-    transform: scale(1.05);
-}
-
-.blockquote {
-    border-left: 5px solid #28a745;
-    padding-left: 15px;
-}
-
-.btn-success {
-    background-color: #28a745;
-    border: none;
-}
-.btn-success:hover {
-    background-color: #FFC107;
-}
-
-/* Section Hero */
-.hero-section {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/static/images/farm.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/static/images/farm.jpg') no-repeat center center;
     background-size: cover;
-    background-position: center;
-    color: white;
-    padding: 100px 20px;
+    color: #fff;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 20px;
 }
+
 .hero-section h1 {
     font-size: 3rem;
     margin-bottom: 20px;
 }
-.hero-section p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-}
+
 .hero-section .btn {
     background-color: var(--primary-color);
     border: none;
     color: white;
-    transition: background-color 0.3s ease;
+    padding: 10px 30px;
+    font-size: 1.1rem;
 }
+
 .hero-section .btn:hover {
-    background-color: var(--secondary-color); /* Jaune au survol */
+    background-color: var(--secondary-color);
+    color: black;
 }
 
-/* Sections génériques */
-.section {
-    padding: 50px 20px;
-    text-align: center;
-}
-.section h2 {
-    margin-bottom: 40px;
-    color: var(--primary-color);
-}
-.card {
-    border: none;
-    border-radius: 10px;
-    box-shadow: var(--box-shadow);
-    transition: transform 0.3s ease;
-}
-.card:hover {
-    transform: translateY(-10px);
-}
-.card-body i {
-    font-size: 2.5rem;
-    color: var(--primary-color);
-}
-
-/* Boutons */
-.btn-success {
-    background-color: var(--primary-color);
-    border: none;
-    color: white;
-    transition: background-color 0.3s ease;
-}
-.btn-success:hover {
-    background-color: var(--secondary-color); /* Jaune au survol */
-}
-
-/* Style pour le logo */
-.navbar-brand .logo-text {
-    font-family: 'Roboto', sans-serif;
-    font-weight: bold;
-    letter-spacing: 2px; /* Espacement entre les lettres pour un effet moderne */
-    text-transform: uppercase; /* Mettre tout en majuscules */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Ombre légère pour plus de profondeur */
-    transition: transform 0.3s ease; /* Effet de survol */
-}
-.navbar-brand .logo-text:hover {
-    transform: scale(1.1); /* Légèrement agrandi au survol */
-}
-.navbar-brand .logo-text span:first-child {
-    color: #28a745; /* Vert pour "agr" */
-}
-.navbar-brand .logo-text span:last-child {
-    color: #FFC107; /* Jaune pour "IA" */
-}
-
-/* Pied de page */
 footer {
     background-color: var(--primary-color);
     color: white;
-    padding: 30px 20px;
+    padding: 30px 0;
     text-align: center;
 }
+
 footer .social-icons a {
     color: white;
     font-size: 1.5rem;
     margin: 0 10px;
-    text-decoration: none;
     transition: color 0.3s ease;
 }
+
 footer .social-icons a:hover {
-    color: var(--accent-color); /* Bleu ciel au survol */
+    color: var(--secondary-color);
 }
 
-/* Styles pour la section Infos et Mises à Jour */
-.updates-section {
-    padding: 50px 20px;
-    background-color: #f8f9fa;
-}
-.updates-section h2 {
-    margin-bottom: 40px;
-    color: var(--primary-color);
-}
-.updates-section .card {
-    border: none;
+/* Mise en forme chatbot */
+#chat-box {
+    border: 1px solid #ccc;
     border-radius: 10px;
-    box-shadow: var(--box-shadow);
-    transition: transform 0.3s ease;
-}
-.updates-section .card:hover {
-    transform: translateY(-10px);
-}
-.updates-section .card img {
-    height: 200px; /* Hauteur fixe pour les images */
-    object-fit: cover; /* Ajustement des images */
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-.updates-section .card-body {
     padding: 20px;
-}
-.updates-section .card-title {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-}
-.updates-section .card-text {
-    font-size: 0.9rem;
-    margin-bottom: 15px;
-}
-.updates-section .btn {
-    background-color: var(--primary-color);
-    border: none;
-    color: white;
-    transition: background-color 0.3s ease;
-}
-.updates-section .btn:hover {
-    background-color: var(--secondary-color); /* Jaune au survol */
+    background-color: white;
+    max-height: 400px;
+    overflow-y: auto;
+    font-size: 1rem;
+    box-shadow: var(--box-shadow);
 }
 
-/* Styles pour AgriBot */
-#prediction-result, #chatbot-response {
-    font-size: 1.2rem;
-    color: #28a745;
-    margin-top: 20px;
-}
-form {
-    max-width: 400px;
-    margin: auto;
-}
-input[type="file"], input[type="text"] {
-    border: 1px solid #ced4da;
-    padding: 10px;
-    border-radius: 5px;
-}
-button {
-    background-color: #28a745;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-button:hover {
-    background-color: #FFC107;
-}
-
-/* Dark Mode */
+/* Dark mode simple */
 body.dark-mode {
     background-color: #121212;
-    color: #ffffff;
-}
-.dark-mode .btn-success {
-    background-color: #FFC107;
-    border: none;
+    color: #f1f1f1;
 }
 
-.card-title {
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem; /* Espace entre l'émoji et le texte */
+body.dark-mode .card, body.dark-mode .navbar, body.dark-mode .footer {
+    background-color: #1e1e1e;
+    color: #fff;
 }
-/* Styles pour les icônes */
-.fa-3x {
-    transition: transform 0.3s ease;
+
+body.dark-mode .btn-success {
+    background-color: var(--secondary-color);
+    color: black;
 }
-.fa-3x:hover {
-    transform: scale(1.2);
-}
+
+.btn-custom-outline {
+    border: 2px solid #00382c;
+    color: #00382c;
+    background-color: transparent;
+    transition: all 0.3s ease;
+  }
+  .btn-custom-outline:hover {
+    background-color: #FFC107;
+    color: #fff;
+    border-color: #FFC107;
+  }
+
+  .btn-custom-outline {
+    border: 2px solid #00382c;
+    color: #00382c;
+    background-color: transparent;
+    transition: all 0.3s ease;
+  }
+  .btn-custom-outline:hover {
+    background-color: #FFC107;
+    color: white;
+    border-color: #FFC107;
+  }
+
+  .news-banner .scrolling-text {
+    white-space: nowrap;
+    animation: scroll-text 15s linear infinite;
+    display: inline-block;
+  }
+  
+  @keyframes scroll-text {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Mon compte - AgriHelper{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="text-center text-success mb-4"><i class="fas fa-user-circle me-2"></i>Mon compte</h2>
+
+  <!-- Onglets -->
+  <ul class="nav nav-tabs justify-content-center mb-4" id="accountTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Connexion</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">Inscription</button>
+    </li>
+  </ul>
+
+  <!-- Contenu des onglets -->
+  <div class="tab-content" id="accountTabsContent">
+    <!-- Connexion -->
+    <div class="tab-pane fade show active" id="login" role="tabpanel">
+      <form method="POST" action="{{ url_for('main.login') }}" class="row g-3 justify-content-center">
+        <div class="col-md-6">
+          <label for="email" class="form-label">Adresse email</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="col-md-6">
+          <label for="password" class="form-label">Mot de passe</label>
+          <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="col-12 text-center">
+          <button type="submit" class="btn btn-success w-50">Se connecter</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Inscription -->
+    <div class="tab-pane fade" id="register" role="tabpanel">
+      <form method="POST" action="{{ url_for('main.register') }}" class="row g-3 justify-content-center">
+        <div class="col-md-6">
+          <label for="username" class="form-label">Nom d'utilisateur</label>
+          <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="col-md-6">
+          <label for="email_register" class="form-label">Adresse email</label>
+          <input type="email" class="form-control" id="email_register" name="email" required>
+        </div>
+        <div class="col-md-6">
+          <label for="password_register" class="form-label">Mot de passe</label>
+          <input type="password" class="form-control" id="password_register" name="password" required>
+        </div>
+        <div class="col-12 text-center">
+          <button type="submit" class="btn btn-outline-success w-50">S'inscrire</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

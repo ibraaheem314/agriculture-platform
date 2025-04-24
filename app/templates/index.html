@@ -3,201 +3,147 @@
 {% block title %}Accueil - AgriHelper{% endblock %}
 
 {% block content %}
-<!-- Section Infos/Mises à Jour -->
-<div class="info-section py-2" style="background-color: #28a745; color: white;">
-    <div class="container">
-        <div class="d-flex align-items-center justify-content-between">
-            <div class="info-text" style="overflow: hidden; white-space: nowrap;">
-                <span class="scrolling-text">
-                    🌱 Dernière mise à jour : Nouvelle fonctionnalité AgriBot disponible ! | 🌞 Consultez nos prévisions météo précises pour la semaine | 📊 Analysez vos sols avec notre outil Typologie des Sols
-                </span>
-            </div>
-            <a href="/articles" class="text-white ms-3" style="text-decoration: none;">Lire plus <i class="fas fa-arrow-right"></i></a>
-        </div>
+<!-- Bandeau Infos/Mises à Jour -->
+<div class="py-2" style="background-color: #00382c; color: white;">
+    <div class="container d-flex justify-content-between align-items-center">
+        <marquee behavior="scroll" direction="left">
+            🌱 Mise à jour : Nouvelle fonctionnalité AgriBot | ☀️ Météo précise disponible | 📊 Typologie des sols améliorée !
+        </marquee>
+        <a href="{{ url_for('main.articles') }}" class="text-white text-decoration-none">Lire plus <i class="fas fa-arrow-right"></i></a>
     </div>
 </div>
 
-<!-- Section Hero -->
-<section class="hero-section text-center py-5" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/static/images/farm.jpg'); background-size: cover; background-position: center; color: white;">
+<!-- Section Héro Visuelle -->
+<section class="py-5 text-center text-white" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/static/images/farm.jpg') no-repeat center center/cover;">
     <div class="container">
-        <h1 class="display-4">L’IA au service de l’agriculture durable</h1>
-        <p class="lead">Transformez vos pratiques agricoles grâce à des outils intelligents et des données en temps réel.</p>
-        <a href="#nos-solutions" class="btn btn-primary btn-lg">Découvrez nos solutions</a>
+        <h1 class="display-4 fw-bold">L’IA au service de l’agriculture durable</h1>
+        <p class="lead mb-4">Optimisez vos cultures grâce à l'intelligence artificielle et aux données en temps réel.</p>
+        <a href="#nos-solutions" class="btn btn-lg" style="background-color: #FFC107; color: #fff; border: none;">
+            Explorer nos solutions
+        </a>        
     </div>
 </section>
 
 <!-- Nos Solutions -->
 <section id="nos-solutions" class="py-5 bg-light">
     <div class="container">
-        <h2 class="text-center mb-5">Nos Solutions</h2>
-        <div class="row">
-            <!-- Carte 1 : AgriBot -->
-            <div class="col-md-4 text-center">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <i class="fas fa-robot fa-3x mb-3" style="color: #28a745;"></i>
-                        <h5 class="card-title">AgriBot</h5>
-                        <p class="card-text">Posez vos questions sur les plantes, les maladies ou les pratiques agricoles.</p>
-                        <a href="{{url_for('main.agribot')}}" class="btn btn-success">Accéder à l'AgriBot</a>
-                    </div>
-                </div>
+      <h2 class="text-center mb-5" style="color: #00382c;">Nos Solutions</h2>
+      <div class="row g-4">
+        <!-- AgriBot -->
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+              <i class="fas fa-robot fa-3x mb-3" style="color: #00382c;"></i>
+              <h5 class="card-title">AgriBot</h5>
+              <p class="card-text">Posez vos questions sur les plantes, maladies ou pratiques agricoles.</p>
+              <a href="{{ url_for('main.agribot') }}" class="btn btn-custom-outline">Lancer AgriBot</a>
             </div>
-            <!-- Carte 2 : Prévisions Météo -->
-            <div class="col-md-4 text-center">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <i class="fas fa-cloud-sun fa-3x mb-3" style="color: #FFC107;"></i>
-                        <h5 class="card-title">Prévisions Météo</h5>
-                        <p class="card-text">Consultez les prévisions météo détaillées pour planifier vos activités.</p>
-                        <a href="{{url_for('main.weather')}}" class="btn btn-success">Voir les prévisions</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Carte 3 : Typologie des Sols -->
-            <div class="col-md-4 text-center">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <i class="fas fa-seedling fa-3x mb-3" style="color: #28a745;"></i>
-                        <h5 class="card-title">Typologie des Sols</h5>
-                        <p class="card-text">Découvrez les caractéristiques des sols de votre région.</p>
-                        <a href="{{url_for('main.soils')}}" class="btn btn-success">Explorer les sols</a>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+  
+        <!-- Météo -->
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+              <i class="fas fa-cloud-sun fa-3x mb-3" style="color: #FFC107;"></i>
+              <h5 class="card-title">Prévisions Météo</h5>
+              <p class="card-text">Anticipez vos activités grâce à des données météo fiables.</p>
+              <a href="{{ url_for('main.weather') }}" class="btn btn-custom-outline">Voir les prévisions</a>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Typologie des Sols -->
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+              <i class="fas fa-seedling fa-3x mb-3" style="color: #00382c;"></i>
+              <h5 class="card-title">Typologie des Sols</h5>
+              <p class="card-text">Identifiez les propriétés des sols de votre région.</p>
+              <a href="{{ url_for('main.soils') }}" class="btn btn-custom-outline">Explorer</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
+  
+  <!-- Pourquoi nous choisir -->
+  <section class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-5" style="color: #00382c;">Pourquoi nous choisir ?</h2>
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <p class="fs-5">
+            AgriHelper combine l’IA, la météo prédictive, et la science des sols pour proposer une agriculture plus intelligente et plus résiliente.
+          </p>
+        </div>
+        <div class="col-md-6">
+          <blockquote class="blockquote border-start ps-3" style="border-color: #00382c;">
+            <p class="mb-0">"AgriHelper m’a permis de doubler mes rendements !"</p>
+            <footer class="blockquote-footer">Un agriculteur satisfait</footer>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<!-- Section Pourquoi nous choisir ? -->
-<section class="why-us-section py-5">
-    <div class="container">
-        <h2 class="text-center mb-5" style="color: #28a745;">Pourquoi nous choisir ?</h2>
-        <div class="row">
-            <div class="col-md-6">
-                <p>
-                    Nous combinons des technologies avancées avec des données en temps réel pour vous offrir des solutions adaptées à vos besoins agricoles.
-                </p>
-            </div>
-            <div class="col-md-6">
-                <blockquote class="blockquote">
-                    <p>"AgriHelper m'a permis de doubler mes rendements grâce à des prévisions météo précises."</p>
-                    <footer class="blockquote-footer">Un agriculteur satisfait</footer>
-                </blockquote>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Section Infos et Mises à Jour -->
-<section class="updates-section py-5" style="background-color: #f8f9fa;">
-    <div class="container">
-        <h2 class="text-center mb-5" style="color: #28a745;">Infos et Mises à Jour</h2>
-        <div class="row">
-            <!-- Article 1 -->
-            <div class="col-md-4 text-center">
-                <div class="card h-100">
-                    <img src="{{ url_for('static', filename='images/article1.jpg') }}" class="card-img-top" alt="Article 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Nouvelles fonctionnalités d'AgriBot</h5>
-                        <p class="card-text">Découvrez les dernières améliorations apportées à notre AgriBot pour une meilleure identification des plantes.</p>
-                        <a href="{{ url_for('main.articles') }}" class="btn btn-success">Lire l'article</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Article 2 -->
-            <div class="col-md-4 text-center">
-                <div class="card h-100">
-                    <img src="{{ url_for('static', filename='images/article2.jpg') }}" class="card-img-top" alt="Article 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Guide pratique : Prévisions météo</h5>
-                        <p class="card-text">Apprenez à utiliser nos prévisions météo pour optimiser vos activités agricoles.</p>
-                        <a href="{{ url_for('main.articles') }}" class="btn btn-success">Lire l'article</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Article 3 -->
-            <div class="col-md-4 text-center">
-                <div class="card h-100">
-                    <img src="{{ url_for('static', filename='images/article3.jpg') }}" class="card-img-top" alt="Article 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Typologie des sols : Nouveaux outils</h5>
-                        <p class="card-text">Explorez les nouvelles fonctionnalités pour analyser les caractéristiques des sols.</p>
-                        <a href="{{ url_for('main.articles') }}" class="btn btn-success">Lire l'article</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="text-center mt-5">
-            <a href="{{ url_for('main.articles') }}" class="btn btn-primary">Voir toutes les mises à jour</a>
-        </div>
-    </div>
-</section>
 
-<!-- Section Communauté et Support -->
-<section class="community-section py-5" style="background-color: #f8f9fa;">
+<!-- Mises à Jour -->
+<section class="updates-section py-5 bg-light">
     <div class="container">
-        <h2 class="text-center mb-5" style="color: #28a745;">Rejoignez notre communauté</h2>
-        <p class="text-center lead">
-            Partagez vos expériences, posez vos questions et obtenez des conseils d'experts agricoles.
-        </p>
-        <div class="text-center">
-            <a href="{{ url_for('main.communaute') }}" class="btn btn-success">Rejoindre la communauté</a>
+      <h2 class="text-center mb-5" style="color: #00382c;">Infos et Mises à Jour</h2>
+      <div class="row g-4">
+        {% for i in range(1,4) %}
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm">
+            <img src="{{ url_for('static', filename='images/article' ~ i ~ '.jpg') }}" class="card-img-top" alt="Article {{ i }}">
+            <div class="card-body">
+              <h5 class="card-title">Titre de l'article {{ i }}</h5>
+              <p class="card-text">Un bref résumé de l'article {{ i }}. Cliquez pour en savoir plus.</p>
+              <a href="{{ url_for('main.articles') }}" class="btn btn-custom-outline">Lire plus</a>
+            </div>
+          </div>
         </div>
+        {% endfor %}
+      </div>
+      <div class="text-center mt-4">
+        <a href="{{ url_for('main.articles') }}" class="btn btn-warning text-white px-4">Voir toutes les actualités</a>
+      </div>
     </div>
-</section>
-
-<!-- Formulaire de Contact -->
-<section class="contact-section py-5">
-    <div class="container">
-        <h2 class="text-center mb-5" style="color: #28a745;">Besoin d'aide ? Contactez-nous</h2>
-        <form method="POST" action="{{ url_for('main.contact_form') }}" class="row g-3 justify-content-center">
-            <div class="col-md-6">
-                <label for="name" class="form-label">Nom complet :</label>
-                <input type="text" class="form-control" id="name" name="name" required>
-            </div>
-            <div class="col-md-6">
-                <label for="email" class="form-label">Email :</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-            <div class="col-12">
-                <label for="message" class="form-label">Message :</label>
-                <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
-            </div>
-            <div class="col-12 text-center">
-                <button type="submit" class="btn btn-success w-100">Envoyer</button>
-            </div>
-        </form>
-    </div>
-</section>
-<!-- Pied de Page -->
-<footer class="bg-dark text-white py-4 mt-5">
+  </section>
+  
+  <!-- Communauté -->
+  <section class="py-5 bg-white">
     <div class="container text-center">
-        <ul class="list-inline mb-3">
-            <li class="list-inline-item">
-                <a href="{{ url_for('main.home') }}" class="text-white">Accueil</a>
-            </li>
-            <li class="list-inline-item">
-                <a href="{{ url_for('main.about') }}" class="text-white">À Propos</a>
-            </li>
-            <li class="list-inline-item">
-                <a href="{{ url_for('main.agribot') }}" class="text-white">AgriBot</a>
-            </li>
-            <li class="list-inline-item">
-                <a href="{{ url_for('main.articles') }}" class="text-white">Articles</a>
-            </li>
-            <li class="list-inline-item">
-                <a href="{{ url_for('main.coachs') }}" class="text-white">Coachs</a>
-            </li>
-            <li class="list-inline-item">
-                <a href="{{ url_for('main.communaute') }}" class="text-white">Communauté</a>
-            </li>
-        </ul>
-        <div class="social-icons mb-3">
-            <a href="#" class="text-white me-3" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-            <a href="#" class="text-white me-3" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="text-white" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        </div>
-        <p class="small">&copy; 2025 AgriHelper. Tous droits réservés.</p>
+      <h2 class="mb-4" style="color: #00382c;">Rejoignez notre communauté</h2>
+      <p class="lead">Posez vos questions, échangez des conseils et collaborez avec d'autres agriculteurs et experts.</p>
+      <a href="{{ url_for('main.communaute') }}" class="btn btn-custom-outline">Accéder au forum</a>
     </div>
-</footer>
+  </section>
+  
+  <!-- Contact -->
+  <section class="bg-light py-5">
+    <div class="container">
+      <h2 class="text-center mb-5" style="color: #00382c;">Nous contacter</h2>
+      <form method="POST" action="{{ url_for('main.contact_form') }}" class="row g-3 justify-content-center">
+        <div class="col-md-6">
+          <label for="name" class="form-label">Nom complet</label>
+          <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="col-md-6">
+          <label for="email" class="form-label">Adresse email</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="col-12">
+          <label for="message" class="form-label">Message</label>
+          <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+        </div>
+        <div class="col-12 text-center">
+          <button type="submit" class="btn btn-custom-outline px-5">Envoyer</button>
+        </div>
+      </form>
+    </div>
+  </section>  
 
 {% endblock %}
