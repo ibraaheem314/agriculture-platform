@@ -61,10 +61,9 @@ articles = [
     # Ajoute plus d'articles ici si besoin
 ]
 
-@main.route("/", methods=["GET", "POST"])
+@main.route("/")
 def home():
     return render_template("index.html")
-
 
 @main.route("/about")
 def about():
@@ -209,41 +208,127 @@ def agribot():
     return render_template("agribot.html")
 
 
-@main.route("/weather", methods=["GET", "POST"])
+# routes.py
+
+main = Blueprint('main', __name__)
+
+# Clés API depuis ton .env
+OPENWEATHER_API_KEY = os.getenv('OPENWEATHER_API_KEY')
+AIRVISUAL_API_KEY = os.getenv('AIRVISUAL_API_KEY')
+
+# =========================
+# Page météo avec carte interactive
+# =========================
+
+@main.route("/weather-map")
+def weather_map():
+    return render_template("weather_map.html")
+
+
+# =========================
+# API - Météo en temps réel (OpenWeather)
+# =========================
+
+@main.route("/api/weather")
+def api_weather():
+    lat = request.args.get('lat')
+    lon = request.args.get('lon')
+
+    if not lat or not lon:
+        return jsonify({"error": "Latitude et longitude requises"}), 400
+
+    url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={OPENWEATHER_API_KEY}&units=metric&lang=fr"
+    try:
+        r = requests.get(url)
+        r.raise_for_status()
+        data = r.json()
+
+        weather_info = {
+            "temperature": round(data["main"]["temp"]),
+            "description": data["weather"][0]["description"].capitalize(),
+            "humidity": data["main"]["humidity"],
+            "pressure": data["main"]["pressure"]
+        }
+        return jsonify(weather_info)
+
+    except requests.RequestException as e:
+        return jsonify({"error": "Erreur lors de l'accès à l'API météo"}), 500
+
+
+# =========================
+# API - Qualité de l'air en temps réel (AirVisual)
+# =========================
+
+@main.route("/api/airquality")
+def api_air_quality():
+    lat = request.args.get('lat')
+    lon = request.args.get('lon')
+
+    if not lat or not lon:
+        return jsonify({"error": "Latitude et longitude requises"}), 400
+
+    url = f"https://api.airvisual.com/v2/nearest_city?lat={lat}&lon={lon}&key={AIRVISUAL_API_KEY}"
+    try:
+        r = requests.get(url)
+        r.raise_for_status()
+        data = r.json()
+
+        aqi = data["data"]["current"]["pollution"]["aqius"]
+        return jsonify({"aqi": aqi})
+
+    except requests.RequestException as e:
+        return jsonify({"error": "Erreur lors de l'accès à l'API qualité de l'air"}), 500
+
+
+# =========================
+# Ancienne page météo basique (Open-Meteo)
+# =========================
+
+@main.route("/weather")
 def weather():
-    city = request.form.get("city", "Kolda") if request.method == "POST" else "Kolda"
-    geo_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={OPENWEATHER_API_KEY}"
-    geo_resp = requests.get(geo_url)
+    latitude = 48.8566  # Paris par défaut
+    longitude = 2.3522
 
-    if geo_resp.ok and geo_resp.json():
-        loc = geo_resp.json()[0]
-        lat, lon = loc["lat"], loc["lon"]
+    url = (
+        f"https://api.open-meteo.com/v1/forecast?"
+        f"latitude={latitude}&longitude={longitude}"
+        f"&daily=temperature_2m_max,temperature_2m_min,precipitation_sum"
+        f"&current_weather=true&timezone=Europe%2FParis"
+    )
 
-        # Météo
-        w_url = f"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={OPENWEATHER_API_KEY}&units=metric"
-        w = requests.get(w_url).json()
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
 
-        # Pollution
-        p_url = f"https://api.airvisual.com/v2/nearest_city?lat={lat}&lon={lon}&key={AIRVISUAL_API_KEY}"
-        p = requests.get(p_url).json()
+        current_weather = data.get("current_weather", {})
+        daily = data.get("daily", {})
 
         weather_data = {
-            "temperature": f"{w['main']['temp']}°C",
-            "description": w["weather"][0]["description"],
-            "humidity": f"{w['main']['humidity']}%",
-            "wind_speed": f"{w['wind']['speed']} m/s",
-            "city": city
+            "location": "Paris, France",
+            "temperature": current_weather.get("temperature"),
+            "condition": current_weather.get("weathercode"),
+            "humidity": None,  # Non fourni par Open-Meteo
+            "wind": current_weather.get("windspeed"),
+            "feels_like": None,  # Non fourni
+            "alert": None,  # Non fourni
+            "updated": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
         }
-        pollution_data = {
-            "aqi": p["data"]["current"]["pollution"]["aqius"],
-            "quality": p["data"]["current"]["pollution"]["mainus"],
-            "city": city
-        }
-    else:
-        weather_data = {"error": "Ville inconnue."}
-        pollution_data = {"error": "Ville inconnue."}
 
-    return render_template("weather.html", weather_data=weather_data, pollution_data=pollution_data, default_city=city)
+        forecast_data = []
+        for i in range(len(daily.get("time", []))):
+            forecast_data.append({
+                "day": daily["time"][i],
+                "temperature": daily["temperature_2m_max"][i],
+                "rainfall": daily["precipitation_sum"][i]
+            })
+
+        return render_template("weather.html", weather=weather_data, forecast=forecast_data)
+
+    except requests.RequestException as e:
+        return render_template("weather.html", weather={}, forecast=[])
+
+
 
 
 @main.route("/soils", methods=["GET", "POST"], endpoint="soils")

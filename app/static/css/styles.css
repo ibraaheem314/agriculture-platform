@@ -278,3 +278,9 @@ body.dark-mode textarea {
     transform: translateY(0);
   }
 }
+
+#map .leaflet-control-attribution {
+  background-color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  padding: 5px;
+}

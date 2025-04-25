@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}🛰️ Carte Météo Interactive - AgriHelper{% endblock %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-4" style="color: var(--primary-color);">🛰️ Carte météo & qualité de l'air</h2>
+    <p class="text-center text-muted mb-5">Survolez votre région pour visualiser les précipitations, la pression atmosphérique et la pollution.</p>
+    <div id="map" style="height: 600px; border-radius: 16px; box-shadow: var(--shadow);"></div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<!-- Leaflet.js -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(initMap, showError);
+  } else {
+    alert("La géolocalisation n'est pas supportée par votre navigateur.");
+  }
+
+  function initMap(position) {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+
+    const map = L.map('map').setView([lat, lon], 8);
+
+    // Base Layer OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Precipitation Layer
+    L.tileLayer('https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=1707374d07315cd524c6e04d0b0b734b', {
+      opacity: 0.5
+    }).addTo(map);
+
+    // Pressure Layer
+    L.tileLayer('https://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=1707374d07315cd524c6e04d0b0b734b', {
+      opacity: 0.3
+    }).addTo(map);
+
+    // Air Quality Layer
+    L.tileLayer('https://tiles.aqicn.org/tiles/usepa-aqi/{z}/{x}/{y}.png?token=b9d331a5-0c64-42ef-84ca-53779858964d', {
+      attribution: 'Air Quality by AQICN',
+      opacity: 0.7
+    }).addTo(map);
+
+    // User Marker
+    L.marker([lat, lon]).addTo(map)
+      .bindPopup("📍 Vous êtes ici")
+      .openPopup();
+  }
+
+  function showError(error) {
+    alert("Erreur : Impossible de récupérer votre position.");
+  }
+});
+</script>
+{% endblock %}
